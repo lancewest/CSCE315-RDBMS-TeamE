@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RDBMS_TeamE", "RDBMS_TeamE\RDBMS_TeamE.vcxproj", "{2FC0FF42-DE0B-4EDE-B482-F39627B49885}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RDBMS_Tests", "RDBMS_Tests\RDBMS_Tests.vcxproj", "{E9C21072-77DC-4063-AF4E-C1F4BBE9AACC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FC0FF42-DE0B-4EDE-B482-F39627B49885}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2FC0FF42-DE0B-4EDE-B482-F39627B49885}.Debug|Win32.Build.0 = Debug|Win32
+		{2FC0FF42-DE0B-4EDE-B482-F39627B49885}.Release|Win32.ActiveCfg = Release|Win32
+		{2FC0FF42-DE0B-4EDE-B482-F39627B49885}.Release|Win32.Build.0 = Release|Win32
+		{E9C21072-77DC-4063-AF4E-C1F4BBE9AACC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E9C21072-77DC-4063-AF4E-C1F4BBE9AACC}.Debug|Win32.Build.0 = Debug|Win32
+		{E9C21072-77DC-4063-AF4E-C1F4BBE9AACC}.Release|Win32.ActiveCfg = Release|Win32
+		{E9C21072-77DC-4063-AF4E-C1F4BBE9AACC}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

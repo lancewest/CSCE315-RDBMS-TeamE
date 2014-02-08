@@ -1,0 +1,20 @@
+﻿Build started 2/7/2014 6:36:39 PM.
+     1>Project "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\RDBMS_TeamE\RDBMS_Tests\RDBMS_Tests.vcxproj" on node 2 (Build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\RDBMS_Tests.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\RDBMS_TeamE /I"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\UnitTest\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\RDBMS_Tests.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /FC /errorReport:prompt Table_Tests.cpp
+         Table_Tests.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\RDBMS_TeamE\Debug\RDBMS_Tests.dll" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\UnitTest\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\RDBMS_TeamE\Debug\RDBMS_Tests.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\RDBMS_TeamE\Debug\RDBMS_Tests.lib" /MACHINE:X86 /DLL Debug\stdafx.obj
+         Debug\Table_Tests.obj
+         RDBMS_Tests.vcxproj -> \\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\RDBMS_TeamE\Debug\RDBMS_Tests.dll
+       FinalizeBuildStatus:
+         Deleting file "Debug\RDBMS_Tests.unsuccessfulbuild".
+         Touching "Debug\RDBMS_Tests.lastbuildstate".
+     1>Done Building Project "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\RDBMS_TeamE\RDBMS_Tests\RDBMS_Tests.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.05
