@@ -18,11 +18,13 @@ private:
 public:
   Attribute(int v, bool p, string n);
   Attribute(string v, bool p, string n, int l);
-  bool operator==(Attribute attribute);
-  bool operator!=(Attribute attribute);
-  void show(); // used to display contents of database and debugging
-  bool is_Primary();
-  bool is_Int();
-  bool is_Varchar();
-  string get_Name();
+  bool operator==(Attribute attribute) const;
+  bool operator!=(Attribute attribute) const;
+  void show() const; // used to display contents of database and debugging
+  bool is_Primary() const;
+  bool is_Int() const;
+  bool is_Varchar() const;
+  bool is_Compatible(Attribute attribute) const;
+  string get_Name() const;
+  void set_Name(string new_name);
 };

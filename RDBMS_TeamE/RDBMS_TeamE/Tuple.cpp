@@ -15,15 +15,24 @@ vector<Attribute> Tuple::get_Attributes()
 }
 
 bool Tuple::operator==(Tuple tuple){
-  return true;//this->attributes == tuple.attributes;
+  return this->attributes == tuple.get_Attributes();
 }
 
 bool Tuple::operator!=(Tuple tuple){
   return !(*this == tuple);
 }
 
+Tuple Tuple::operator+(Tuple t)
+{
+  Tuple new_tuple = *this;
+  for(Attribute& i: t.get_Attributes()) {
+    new_tuple.attributes.push_back(i);
+  }
+  return new_tuple;
+}
+
 void Tuple::show() {
-  for(Attribute i: this->attributes) {
+  for(Attribute& i: this->attributes) {
     i.show();
     cout << "\t";
   }

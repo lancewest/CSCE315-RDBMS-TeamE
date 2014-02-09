@@ -1,6 +1,6 @@
 #include "Table.h"
 
-//Assume all tuples have the same types, might check this later
+#include <algorithm>
 
 Table::Table() : name(""), tuples() {}
 
@@ -8,31 +8,124 @@ Table::Table(string n) : name(n), tuples() {}
 
 Table::Table(string n, vector<Tuple> t) : name(n), tuples(t) {}
 
-  /******************************************************************************
-  Eliezer Cabrera: The remaining functions are dummy functions, except get_Name()
-  ******************************************************************************/
+void Table::insert(Tuple new_tuple)
+{
+  this->tuples.push_back(new_tuple);
+}
 
-Table Table::operator+(Table table) { return *this; }
+bool Table::is_Union_Compatible(Table table)
+{
+  Attribute lhs = this->get_Tuples().front().get_Attributes().front();
+  Attribute rhs = table.get_Tuples().front().get_Attributes().front();
 
-Table Table::operator-(Table table) { return *this; }
+  if(lhs.is_Compatible(rhs)) {
+    return true;
+  }
 
-Table Table::operator*(Table table) { return *this; }
-  
-Table Table::operator=(Table table) { return *this; }
+  return false;
+}
 
-void Table::insert(Tuple new_tuple) {}
-   
-void Table::remove(Tuple tuple_name) {}
+Table Table::operator+(Table table)
+{
+  Table new_table = *this;
+  new_table.set_Name(this->get_Name() + " + " + table.get_Name());
+
+  if(this->is_Union_Compatible(table)) {
+    vector<Tuple> tuples = new_table.get_Tuples();
+
+    for(Tuple& i: table.get_Tuples()) {
+      if(find(begin(tuples), end(tuples), i) != tuples.cend()) {
+	      new_table.insert(i);
+	    }
+    }
+  }
+  return new_table;
+}
+
+void Table::remove(Tuple tuple)
+{
+  for(auto i = this->tuples.begin(); i != this->tuples.end(); ++i) {
+    if(*i == tuple) {
+      this->tuples.erase(i);
+	  i = this->tuples.begin();
+	}
+  }
+}
+
+Table Table::operator-(Table table)
+{
+  Table new_table = *this;
+  new_table.set_Name(this->get_Name() + " - " + table.get_Name());
+
+
+  if(this->is_Union_Compatible(table)) {
+    vector<Tuple> tuples = new_table.get_Tuples();
+
+    for(Tuple& i: table.get_Tuples()) {
+      if(find(begin(tuples), end(tuples), i) == tuples.cend()) {
+	      new_table.remove(i);
+	    }
+    }
+  }
+  return new_table;
+}
+
+Table Table::operator*(Table table)
+{
+  Table new_table;
+  new_table.set_Name(this->get_Name() + "*" + table.get_Name());
+
+  for(Tuple& i: this->get_Tuples()) {
+    for(Tuple &j: table.get_Tuples()) {
+		  new_table.insert(i+j);
+	  }
+  }
+
+  return new_table;
+}
 
 string Table::get_Name()
 {
   return this->name;
 }
 
-//vector<Tuple> Table::get_Tuples() {}
+void Table::set_Name(string new_name)
+{
+  this->name = new_name;
+}
 
-void Table::show() {}
+vector<Tuple> Table::get_Tuples()
+{
+	return this->tuples;
+}
 
-//vector<Attribute> Table::get_Column(string attr_name) {}
+void Table::show()
+{
+  cout << "Table: " << name << "\n";
+  for(unsigned int i = 0; i < tuples.size(); ++i) {
+    cout << i << "Contents: ";
+    tuples[i].show();
+    cout << "\n";
+  }
+}
 
-int Table::replace_Attribute(string attr_name, Attribute attr, int tuple) { return -1; }
+vector<Attribute> Table::get_Column(string attr_name)
+{
+  vector<Attribute> column;
+
+  for(Tuple& i: this->get_Tuples()) {
+    for(Attribute& j: i.get_Attributes()) {
+      if(j.get_Name() == attr_name) {
+        column.push_back(j);
+      }
+    }
+  }
+
+  return column;
+}
+
+//Replaces an attribute of the tuple specified via index
+void Table::replace_Attribute(string attr_name, Attribute attr, int tuple_index)
+{
+  this->tuples[tuple_index].replace_Attribute(attr_name, attr);
+}

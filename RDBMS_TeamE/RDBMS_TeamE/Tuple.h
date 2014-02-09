@@ -11,9 +11,9 @@ public:
   Tuple(vector<Attribute> a);   // used to initialize full tuple
   bool operator==(Tuple t);
   bool operator!=(Tuple t);
+  Tuple operator+(Tuple t);
   void show(); 
   vector<Attribute> get_Attributes();
   int get_Size();
   void replace_Attribute(string attr_name, Attribute attr);
 };
-

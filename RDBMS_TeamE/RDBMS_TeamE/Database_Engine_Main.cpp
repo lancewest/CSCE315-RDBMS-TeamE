@@ -6,5 +6,7 @@ using namespace std;
 
 int main()
 {
-	cout << "Hello World\n";
+	cout << "Enter any character to terminate program: \n";
+  char c;
+  cin >> c;
 }

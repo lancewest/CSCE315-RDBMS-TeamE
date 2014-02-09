@@ -4,7 +4,8 @@ Attribute::Attribute(int v, bool p, string n) : int_val(v), is_primary(p), name(
 
 Attribute::Attribute(string v, bool p, string n, int l) : string_val(v), is_primary(p), name(n), length(l){}
 
-bool Attribute::operator==(Attribute attribute) {
+bool Attribute::operator==(Attribute attribute) const
+{
   if(this->is_Int() &&
     this->int_val    == attribute.int_val &&
     this->is_primary == attribute.is_primary &&
@@ -23,11 +24,13 @@ bool Attribute::operator==(Attribute attribute) {
   return false;
 }
 
-bool Attribute::operator!=(Attribute attribute) {
+bool Attribute::operator!=(Attribute attribute) const
+{
   return !(*this == attribute);
 }
   
-void Attribute::show() {
+void Attribute::show() const
+{
   if(this->is_Int()) {
     cout << int_val;
   }
@@ -36,12 +39,12 @@ void Attribute::show() {
   }
 }
 
-bool Attribute::is_Primary()
+bool Attribute::is_Primary() const
 {
   return is_primary;
 }
 
-bool Attribute::is_Int()
+bool Attribute::is_Int() const
 {
   if(this->length == -1) {
     return true;
@@ -50,12 +53,27 @@ bool Attribute::is_Int()
   return false;
 }
 
-bool Attribute::is_Varchar()
+bool Attribute::is_Varchar() const
 {
   return !(this->is_Int());
 }
 
-string Attribute::get_Name()
+bool Attribute::is_Compatible(Attribute attribute) const
+{
+  if(this->name   == attribute.name &&
+     this->length == attribute.length) {
+	   return true;
+  }
+	   
+  return false;
+}
+
+string Attribute::get_Name() const
 {
   return name;
+}
+
+void Attribute::set_Name(string new_name)
+{
+  this->name = new_name;
 }
