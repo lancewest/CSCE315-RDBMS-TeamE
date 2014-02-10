@@ -34,9 +34,9 @@ Table Table::operator+(Table table)
     vector<Tuple> tuples = new_table.get_Tuples();
 
     for(Tuple& i: table.get_Tuples()) {
-      if(find(begin(tuples), end(tuples), i) != tuples.cend()) {
+      //if(find(begin(tuples), end(tuples), i) == tuples.cend()) {
 	      new_table.insert(i);
-	    }
+	    //}
     }
   }
   return new_table;

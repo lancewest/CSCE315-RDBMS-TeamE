@@ -18,6 +18,7 @@ private:
 public:
   Attribute(int v, bool p, string n);
   Attribute(string v, bool p, string n, int l);
+  Attribute();
   bool operator==(Attribute attribute) const;
   bool operator!=(Attribute attribute) const;
   void show() const; // used to display contents of database and debugging
