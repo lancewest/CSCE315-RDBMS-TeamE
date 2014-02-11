@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Table.h"
+#include "Tuple.h"
 
 class DB_Engine
 {
 private:
   vector<Table> tables;
 public:
-  void create_Table(string name/*, vector<Type> types*/);
+  void create_Table(string name);
     
   void open(string directory); //opens and imports the SQL of all files in a directory into our object structure (Tables, Attributes, Tuples)
   void write(Table table);     //Writes a given table into SQL instruction to a file in the database
@@ -15,7 +16,7 @@ public:
   void close(); //Closes the current database session
 
   void show(Table table); // Shows requested table
-  void update(Table table, string attr_name, Attribute attr, bool (*f)(Attribute)); //Updates an attribute in a given table and row.
+  void update(Table& table, string attr_name, Attribute attr, bool (*f)(Attribute)); //Updates an attribute in a given table and row.
   void insert(Table table, Tuple tuple); //Inserts a new Tuple into a Table
  
   void erase(Table table);              //Deletes an entire Table
@@ -26,13 +27,14 @@ public:
 
   Table rename(vector<string> new_attr_names, Table table); //Replaces the attribute names in the table with new_attribute_names
 
-  void union_Tables(Table table1, Table table2); //Returns a Table that is the union of two Tables
-  void difference_Tables(Table table1, Table table2); //returns the difference between two Tables
-  void cartessian_Tables(Table table1, Table table2); //Returns a table that is the cartesian product of two tables
-  void natural_Join(Table table1, Table table2);
+  Table union_Tables(Table table1, Table table2);      //Returns a Table that is the union of two Tables
+  Table difference_Tables(Table table1, Table table2); //returns the difference between two Tables
+  Table cartessian_Tables(Table table1, Table table2); //Returns a table that is the cartesian product of two tables
+  Table natural_Join(Table table1, Table table2);      //Return a new table representing the natural join of the two argument tables
 
   int find(string name); //finds a table in the tables vector by its name
 
-  vector<Table> get_Tables();
+  vector<Table> get_Tables() const;
+  vector<Attribute> get_Common_Attributes(Table table1, Table table2);
+  Table* get_Table(string table_name);
 };
-

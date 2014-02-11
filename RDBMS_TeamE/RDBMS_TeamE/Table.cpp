@@ -10,13 +10,19 @@ Table::Table(string n, vector<Tuple> t) : name(n), tuples(t) {}
 
 void Table::insert(Tuple new_tuple)
 {
+  for(Tuple& i: this->tuples) {
+    if(i.is_Primarily_Equal(new_tuple)) {
+	  return;
+	}
+  }
+
   this->tuples.push_back(new_tuple);
 }
 
 bool Table::is_Union_Compatible(Table table)
 {
-  Attribute lhs = this->get_Tuples().front().get_Attributes().front();
-  Attribute rhs = table.get_Tuples().front().get_Attributes().front();
+  Tuple lhs = this->get_Tuples().front();
+  Tuple rhs = table.get_Tuples().front();
 
   if(lhs.is_Compatible(rhs)) {
     return true;
@@ -96,13 +102,13 @@ void Table::set_Name(string new_name)
 
 vector<Tuple> Table::get_Tuples()
 {
-	return this->tuples;
+  return this->tuples;
 }
 
 void Table::show()
 {
   cout << "Table: " << name << "\n";
-  for(unsigned int i = 0; i < tuples.size(); ++i) {
+  for(unsigned int i = 0; i < this->tuples.size(); ++i) {
     cout << i << "Contents: ";
     tuples[i].show();
     cout << "\n";

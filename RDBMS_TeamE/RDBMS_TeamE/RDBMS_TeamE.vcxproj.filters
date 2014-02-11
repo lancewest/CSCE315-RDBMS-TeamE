@@ -38,7 +38,7 @@
     <ClCompile Include="Tuple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Database_Engine_Main.cpp">
+    <ClCompile Include="DB_Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

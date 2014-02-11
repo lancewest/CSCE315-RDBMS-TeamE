@@ -14,11 +14,13 @@ vector<Attribute> Tuple::get_Attributes()
   return this->attributes;
 }
 
-bool Tuple::operator==(Tuple tuple){
+bool Tuple::operator==(Tuple tuple)
+{
   return this->attributes == tuple.get_Attributes();
 }
 
-bool Tuple::operator!=(Tuple tuple){
+bool Tuple::operator!=(Tuple tuple)
+{
   return !(*this == tuple);
 }
 
@@ -47,25 +49,60 @@ void Tuple::replace_Attribute(string attr_name, Attribute attr)
   }
 }
 
-/*bool Tuple::equal_On_Keys(Tuple t, vector<Attribute> keys)
+bool Tuple::is_Primarily_Equal(Tuple t)
 {
-	for(Attribute a : keys)
-	{
-		if( get_Attribute(a.get_Name()) != t.get_Attribute(a.get_Name()) )
-			return false;
-	}
+  vector<Attribute> rhs = this->get_Attributes();
+  vector<Attribute> lhs = t.get_Attributes();
 
-	return true;
+  if(rhs.size() != lhs.size()) {
+    return false;
+  }
+
+  for(unsigned int i = 0; i < this->get_Size(); ++i) {
+    if( this->get_Attributes()[i].is_Primary() &&
+	   this->get_Attributes()[i] != t.get_Attributes()[i] ) {
+         return false;
+    }
+  }
+
+  return true;
+}
+
+bool Tuple::is_Compatible(Tuple t)
+{
+  vector<Attribute> rhs = this->get_Attributes();
+  vector<Attribute> lhs = t.get_Attributes();
+
+  if(rhs.size() != lhs.size()) {
+    return false;
+  }
+
+  for(unsigned int i = 0; i < rhs.size(); ++i) {
+	if(!rhs[i].is_Compatible(lhs[i])) {
+	  return false;
+	}
+  }
+
+  return true;
+}
+
+bool Tuple::equal_On_Keys(Tuple t, vector<Attribute> keys)
+{
+  for(Attribute a : keys){
+    if( get_Attribute(a.get_Name()) != t.get_Attribute(a.get_Name()) )
+      return false;
+    }
+
+    return true;
 }
 
 Attribute Tuple::get_Attribute(string attribute_name)
 {
-	for(Attribute a : attributes)
-	{
-		if(a.get_Name() == attribute_name)
-			return a;
-	}
+  for(Attribute a : attributes){
+    if(a.get_Name() == attribute_name)
+      return a;
+  }
 
-	return *new Attribute();
-}*/
+  return *new Attribute("null",false,"empty_attribute",1);
+}
 
