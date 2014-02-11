@@ -46,3 +46,26 @@ void Tuple::replace_Attribute(string attr_name, Attribute attr)
     }
   }
 }
+
+/*bool Tuple::equal_On_Keys(Tuple t, vector<Attribute> keys)
+{
+	for(Attribute a : keys)
+	{
+		if( get_Attribute(a.get_Name()) != t.get_Attribute(a.get_Name()) )
+			return false;
+	}
+
+	return true;
+}
+
+Attribute Tuple::get_Attribute(string attribute_name)
+{
+	for(Attribute a : attributes)
+	{
+		if(a.get_Name() == attribute_name)
+			return a;
+	}
+
+	return *new Attribute();
+}*/
+

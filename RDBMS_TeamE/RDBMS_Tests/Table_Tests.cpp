@@ -161,7 +161,7 @@ namespace RDBMS_Tests
 
 			Table subtraction = accounts - clients;
 
-			Assert::IsTrue(true); //Needs Works: I don't understand what subtraction is supposed to be doing
+			Assert::IsTrue(subtraction.get_Tuples().size() == 3); //Need to talk about what subtraction should do
 		}
 
 		TEST_METHOD(test_Table_Multiply)

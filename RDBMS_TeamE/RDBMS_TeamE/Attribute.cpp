@@ -77,3 +77,13 @@ void Attribute::set_Name(string new_name)
 {
   this->name = new_name;
 }
+
+string Attribute::get_String_Value()
+{
+	return string_val;
+}
+
+int Attribute::get_Int_Value()
+{
+	return int_val;
+}

@@ -16,4 +16,6 @@ public:
   vector<Attribute> get_Attributes();
   int get_Size();
   void replace_Attribute(string attr_name, Attribute attr);
+  bool equal_On_Keys(Tuple t, vector<Attribute> keys);
+  Attribute get_Attribute(string attribute_name);
 };

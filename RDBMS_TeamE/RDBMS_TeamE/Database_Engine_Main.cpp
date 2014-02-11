@@ -3,12 +3,12 @@
 #include <iostream>
 #include "table.h"
 #include "tuple.h"
-#include "record.h"
-#include "exception.h"
+//#include "record.h"
+//#include "exception.h"
 
 using namespace std;
 
-Table* read_from_db2() 
+/*Table* read_from_db2() 
 {
  if (myfile.is_open())
   {
@@ -114,7 +114,7 @@ Table* read_from_db2()
 
   }
 
-}
+}*/
 
 int main()
 {
@@ -122,3 +122,59 @@ int main()
   char c;
   cin >> c;
 }
+
+/*Table DB_Engine::natural_Join(Table table1, Table table2)
+{
+	vector<Attribute> common_attributes = get_Common_Attributes(table1, table2);
+
+	vector<Tuple> new_tuples;
+
+	for(Tuple tuple1 : table1.get_Tuples())
+	{
+		for(Tuple tuple2 : table2.get_Tuples())
+		{
+			if( tuple1.equal_On_Keys(tuple2, common_attributes) )
+			{
+				Tuple *new_tuple = new Tuple(tuple1);
+
+				for(Attribute a : tuple2.get_Attributes())
+				{
+					bool unique = true;
+
+					for(Attribute common_a : common_attributes)
+					{
+						if(a.is_Compatible(common_a) )
+						{
+							unique = false;
+							break;
+						}
+					}
+
+					if(unique)
+						new_tuples.push_back(*new_tuple);
+				}
+			}
+		}
+	}
+
+	Table *joined = new Table(table1.get_Name() + " joined with " + table2.get_Name(), new_tuples);
+
+	return *joined;
+}
+
+vector<Attribute> get_Common_Attributes(Table table1, Table table2)
+{
+	vector<Attribute> common_attributes;
+
+	for(Attribute a1 : table1.get_Tuples()[0])
+	{
+		for(Attribute a2 : table2.get_Tuples()[0])
+		{
+			if(a1.is_Compatible(a2))
+				common_attributes.push_back(a1);
+		}
+	}
+
+	return common_attributes;
+}*/
+

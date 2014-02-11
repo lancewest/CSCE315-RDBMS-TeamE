@@ -28,4 +28,7 @@ public:
   bool is_Compatible(Attribute attribute) const;
   string get_Name() const;
   void set_Name(string new_name);
+  string get_String_Value();
+  int get_Int_Value();
+
 };

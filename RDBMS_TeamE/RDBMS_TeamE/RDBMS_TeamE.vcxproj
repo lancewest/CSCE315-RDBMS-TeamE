@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Attribute.h" />
+    <ClInclude Include="DB_Engine.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="Tuple.h" />
   </ItemGroup>
