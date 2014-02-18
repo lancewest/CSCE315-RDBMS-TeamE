@@ -21,3 +21,21 @@ public:
   bool equal_On_Keys(Tuple t, vector<Attribute> keys);
   Attribute get_Attribute(string attribute_name);
 };
+
+inline ostream& operator<<(ostream& os, Tuple& t)
+{
+  os << "(";
+
+  vector<Attribute> attributes = t.get_Attributes();
+
+  for(auto i = attributes.begin(); i != attributes.end(); ++i) {
+    os << *i;
+    if(attributes.cend() - i != 1) {
+      os << ", ";
+    }
+  }
+  
+  os << ");";
+
+  return os;
+}

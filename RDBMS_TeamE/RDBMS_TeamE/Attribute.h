@@ -30,5 +30,17 @@ public:
   void set_Name(string new_name);
   string get_String_Value();
   int get_Int_Value();
-
+  int get_Length();
 };
+
+inline ostream& operator<<(ostream& os, Attribute& a)
+{
+  if(a.is_Int()) {
+    os << a.get_Int_Value();
+  }
+  if(a.is_Varchar()) {
+    os << "\"" << a.get_String_Value() << "\"";
+  }
+
+  return os;
+}

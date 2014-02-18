@@ -1,50 +1,28 @@
-#include <vector>
-#include <string>
+// Patrick Rock
+// 9/3/2013
+// Testing file for database engine
+
+#include <fstream>
 #include <iostream>
-
+#include "table.h"
 #include "DB_Engine.h"
+#include <vector>
+#include "Tokenizer.h"
+#include "parser.h"
+#include "Simple_Parser.h"
 
-using namespace std;
+bool f(Attribute a) {
+	return true;
+}
 
-int main()
-{
-  //Main output crude, early implementation of show()
+int main() {
+  //Read in from file
+  DB_Engine db;
 
-  DB_Engine *engine = new DB_Engine();
+  cout << "\n\n\nSQL from file test\n========================\n";
+  db.open("sql.txt");
 
-  Attribute *client_id = new Attribute(1, true, "Client Id");
-  Attribute *client_name = new Attribute("Lance West", false, "Client Name", 1);
-  vector<Attribute> tuple_attributes;
-  tuple_attributes.push_back(*client_id);
-  tuple_attributes.push_back(*client_name);
-  Tuple *tuple = new Tuple(tuple_attributes);
-
-  Attribute *client_id2 = new Attribute(123, true, "Client Id");
-  Attribute *client_name2 = new Attribute("Iron Man", false, "Client Name", 1);
-  vector<Attribute> tuple_attributes2;
-  tuple_attributes2.push_back(*client_id2);
-  tuple_attributes2.push_back(*client_name2);
-  Tuple *tuple2 = new Tuple(tuple_attributes2);
-
-  Attribute *client_id3 = new Attribute(55, true, "Client Id");
-  Attribute *client_name3 = new Attribute("Billy Bob", false, "Client Name", 1);
-  vector<Attribute> tuple_attributes3;
-  tuple_attributes3.push_back(*client_id3);
-  tuple_attributes3.push_back(*client_name3);
-  Tuple *tuple3 = new Tuple(tuple_attributes3);
-
-  engine->create_Table("Clients");
-
-  engine->insert( *(engine->get_Table("Clients")), *tuple);
-  engine->insert( *(engine->get_Table("Clients")), *tuple2);
-  engine->insert( *(engine->get_Table("Clients")), *tuple3);
-
-  engine->show(*(engine->get_Table("Clients")));
-
-  cout << "\n\n\nEnter any character to terminate program: \n";
+  cout << "Enter any character to terminate program.\n";
   char c;
   cin >> c;
 }
-
-
-

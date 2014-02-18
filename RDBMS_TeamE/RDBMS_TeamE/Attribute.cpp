@@ -87,3 +87,8 @@ int Attribute::get_Int_Value()
 {
   return int_val;
 }
+
+int Attribute::get_Length()
+{
+  return this->length;
+}

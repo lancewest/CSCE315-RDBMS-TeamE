@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DB_Engine.h"
+#include "Parser.h"
 #include <fstream>
 
 
@@ -13,12 +14,77 @@ void DB_Engine::create_Table(string name)
 
 void DB_Engine::open(string directory)
 {
-  //Not needed for first deliverable
+  ifstream my_read_file;
+  my_read_file.open(directory.c_str());
+
+  if (my_read_file.is_open()) {
+    cout << "File opened." << endl;
+    string output;
+
+    while (getline(my_read_file, output, ';')) {
+      output.push_back(';');
+      cout << output << endl;
+      Parser open_file = Parser(output);
+    
+      bool ret = open_file.parse();
+
+      cout << ret << endl;
+    }
+  }
 }
 
 void DB_Engine::write(Table table)
 {
-  //Not needed for first deliverable
+  ofstream ofs(table.get_Name().data(), std::ios::out);
+  vector<Attribute> attributes = table.get_Tuples().front().get_Attributes();
+
+  cout << "CREATE TABLE " << table.get_Name() << " (";
+
+  for(auto i = attributes.begin(); i != attributes.end(); ++i) {
+    if(i->is_Varchar()) {
+      cout << i->get_Name() << " VARCHAR(" << i->get_Length() << ")";
+    }
+
+    if(i->is_Int()) {
+      cout << i->get_Name() << " INTEGER";
+    }
+
+    if(attributes.end() - i != 1) {
+      cout << ", ";
+    }
+
+    else {
+      cout << ") ";
+    }
+  }
+
+  cout << "PRIMARY KEY (";
+
+  for(auto i = attributes.begin(); i != attributes.end(); ++i) {
+
+    if(i != attributes.begin()) {
+      cout << ", ";
+    }
+
+    if(i->is_Primary()) {
+      cout << i->get_Name();
+    }
+
+    if(attributes.end() - i == 1) {
+      cout << "\b\b";
+      cout << ");";
+    }
+  }
+
+  cout << endl;
+
+  for(Tuple& i: table.get_Tuples()) {
+    cout << "INSERT INTO " << table.get_Name() << " VALUES FROM " << i << endl;
+  }
+
+  //cout << "WRITE " << table.get_Name() << ";" << endl;
+  //cout << "CLOSE " << table.get_Name() << ";" << endl;
+  //cout << "EXIT" << ";" << endl;
 }
 
 void DB_Engine::show(Table table)
@@ -195,20 +261,13 @@ void DB_Engine::close()
 
 int DB_Engine::find(string name)
 {
-  /*Not needed for current deliverable
-  for(Table& i: this->get_Tables()) {
-    if(i.get_Name() = name) {
-	  return 
-
-  for(int i = 0; i < tables.size(); i++) {
-    if (tables[i].get_Name() == name) {
-	  return i;
-	}
+  vector<Table> tables = this->get_Tables();
+  for(int i = 0; i < tables.size(); ++i) {
+    if(tables[i].get_Name() == name) {
+	    return i;
+    }
   }
-  return -1;
-  */
-
-	return 1;
+	return -1;
 }
 
 Table* DB_Engine::get_Table(string table_name)
