@@ -38,41 +38,33 @@ public:
   string parse_Relation();
 
   bool parse_Identifier();
-  bool parse_Expr();
+  bool parse_Expression();
   bool parse_Atomic();
-  bool parse_Selection();
+
   bool parse_Condition();
+  bool parse_Condition_List();
+
   bool parse_Conjunction();
   bool parse_Comparison();
     
   string parse_Op();
   string parse_Attribute_Name();
 
-  bool parse_Projection();
+  bool parse_Attribute();
   bool parse_Attribute_List();
-  bool parse_Renaming();
-  bool parse_Union();
-  bool parse_Difference();
-  bool parse_Product();
 
   //command parsing functions
   bool parse_Command();
-  bool parse_Open();
-  bool parse_Close();
-  bool parse_Write();
-  bool parse_Exit();
-  bool parse_Show();
-  bool parse_Create();
-  bool parse_Update();
-  bool parse_Insert();
-  bool parse_Delete();
+  bool parse_Assignment();
+
+  bool parse_Literal();
+  bool parse_Literal_List();
+
+  bool parse_Typed_Attribute();
   bool parse_Typed_Attribute_List();
-  bool parse_Type();
-  bool parse_Int();
+
   bool parse_Var_Type();
   bool parse_Int_Type();
-
-	string parse_Literal();
 
   bool isid(string id); //helper function tests for valid identifier names, needs implementation currently returns true
 };

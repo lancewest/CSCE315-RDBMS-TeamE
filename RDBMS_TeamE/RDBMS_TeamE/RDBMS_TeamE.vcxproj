@@ -83,6 +83,7 @@
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Simple_Parser.h" />
     <ClInclude Include="Table.h" />
+    <ClInclude Include="Token.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="Tuple.h" />
   </ItemGroup>
@@ -92,6 +93,7 @@
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Simple_Parser.cpp" />
     <ClCompile Include="Table.cpp" />
+    <ClCompile Include="Token.cpp" />
     <ClCompile Include="Tokenizer.cpp" />
     <ClCompile Include="Tuple.cpp" />
   </ItemGroup>

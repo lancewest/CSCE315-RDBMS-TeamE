@@ -1,6 +1,10 @@
-﻿Build started 2/17/2014 10:44:04 PM.
+﻿Build started 2/18/2014 5:56:07 AM.
      1>Project "\\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\Desktop\Project 1\RDBMS_TeamE\RDBMS_Main\RDBMS_Main.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\RDBMS_TeamE /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Database_Engine_Main.cpp
+         Skipping... (no relevant changes detected)
+         Database_Engine_Main.cpp
+       Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"\\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\Desktop\Project 1\RDBMS_TeamE\Debug\RDBMS_Main.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"\\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\Desktop\Project 1\RDBMS_TeamE\Debug\RDBMS_Main.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"\\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\Desktop\Project 1\RDBMS_TeamE\Debug\RDBMS_Main.lib" /MACHINE:X86 Debug\Database_Engine_Main.obj
          "\\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\Desktop\Project 1\RDBMS_TeamE\Debug\RDBMS_TeamE.lib"
          RDBMS_Main.vcxproj -> \\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\Desktop\Project 1\RDBMS_TeamE\Debug\RDBMS_Main.exe
@@ -8,4 +12,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:10.54
+Time Elapsed 00:00:17.34

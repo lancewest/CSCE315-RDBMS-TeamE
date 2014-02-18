@@ -1,15 +1,18 @@
-﻿Build started 2/17/2014 10:43:58 PM.
+﻿Build started 2/18/2014 5:55:58 AM.
      1>Project "\\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\Desktop\Project 1\RDBMS_TeamE\RDBMS_TeamE\RDBMS_TeamE.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Tokenizer.cpp
-         Tokenizer.cpp
-     1>\\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\desktop\project 1\rdbms_teame\rdbms_teame\tokenizer.cpp(80): warning C4018: '<' : signed/unsigned mismatch
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt DB_Engine.cpp Parser.cpp
+         Parser.cpp
+         DB_Engine.cpp
+     1>\\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\desktop\project 1\rdbms_teame\rdbms_teame\db_engine.cpp(265): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:"\\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\Desktop\Project 1\RDBMS_TeamE\Debug\RDBMS_TeamE.lib" /NOLOGO Debug\Attribute.obj
          Debug\DB_Engine.obj
          Debug\Parser.obj
          Debug\Simple_Parser.obj
          Debug\Table.obj
+         Debug\Token.obj
          Debug\Tokenizer.obj
          Debug\Tuple.obj
          RDBMS_TeamE.vcxproj -> \\filer.cs.tamu.edu\cabrera\ms_windows\cpsc_redirected\Desktop\Project 1\RDBMS_TeamE\Debug\RDBMS_TeamE.lib
@@ -17,4 +20,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.39
+Time Elapsed 00:00:04.39

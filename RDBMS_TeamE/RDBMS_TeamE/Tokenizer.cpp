@@ -18,17 +18,17 @@ bool Tokenizer::consume_Token(string in)
   if(this->index == this->tokens.size()) {
     return false;
   }
-  if(in == tokens[index]) {
+  if(in == tokens[index].get_Value()) {
     index++;
     return true;
   }
   return false;
 }
 
-string Tokenizer::get_Token()
+Token Tokenizer::get_Token()
 {
   if(this->index == this->tokens.size()) {
-    return "";
+    return Token("", "");
   }
 
   return tokens[index];
@@ -36,55 +36,55 @@ string Tokenizer::get_Token()
 
 Tokenizer::Tokenizer(string* text) : position(0), index(0), point(0)
 {
-  vector<string> possible_tokens;
-    possible_tokens.push_back("OPEN");
-    possible_tokens.push_back("CLOSE");
-    possible_tokens.push_back("WRITE");
-    possible_tokens.push_back("EXIT");
-    possible_tokens.push_back("SHOW");
-    possible_tokens.push_back("CREATE TABLE");
-    possible_tokens.push_back("PRIMARY KEY");
-    possible_tokens.push_back("UPDATE");
-    possible_tokens.push_back("SET");
-    possible_tokens.push_back("WHERE"); 
-    possible_tokens.push_back("INSERT INTO");
-    possible_tokens.push_back("VALUES FROM RELATION");
-    possible_tokens.push_back("VALUES FROM");
-    possible_tokens.push_back("select");
-    possible_tokens.push_back("project");
-    possible_tokens.push_back("join");
-    possible_tokens.push_back("RENAME");
-    possible_tokens.push_back("DELETE FROM");
-    possible_tokens.push_back("VARCHAR");
-    possible_tokens.push_back("INTEGER");
+  vector<Token> possible_tokens;
+    possible_tokens.push_back(Token("OPEN", "command"));
+    possible_tokens.push_back(Token("CLOSE", "command"));
+    possible_tokens.push_back(Token("WRITE", "command"));
+    possible_tokens.push_back(Token("EXIT", "command"));
+    possible_tokens.push_back(Token("SHOW", "command"));
+    possible_tokens.push_back(Token("CREATE TABLE", "command"));
+    possible_tokens.push_back(Token("PRIMARY KEY", "keyword"));
+    possible_tokens.push_back(Token("UPDATE", "command"));
+    possible_tokens.push_back(Token("SET", "keyword"));
+    possible_tokens.push_back(Token("WHERE", "keyword")); 
+    possible_tokens.push_back(Token("INSERT INTO", "command"));
+    possible_tokens.push_back(Token("VALUES FROM RELATION", "keyword"));
+    possible_tokens.push_back(Token("VALUES FROM", "keyword"));
+    possible_tokens.push_back(Token("select", "query"));
+    possible_tokens.push_back(Token("project", "query"));;
+    possible_tokens.push_back(Token("rename", "query"));
+    possible_tokens.push_back(Token("DELETE FROM", "command"));
+    possible_tokens.push_back(Token("VARCHAR", "literal"));
+    possible_tokens.push_back(Token("INTEGER", "literal"));
   //operators
-    possible_tokens.push_back("==");
-    possible_tokens.push_back("<-");
-    possible_tokens.push_back("!=");
-    possible_tokens.push_back("<=");
-    possible_tokens.push_back(">=");
-    possible_tokens.push_back("<");
-    possible_tokens.push_back(">");
-    possible_tokens.push_back("+");
-    possible_tokens.push_back("-");
-    possible_tokens.push_back("*");
-    possible_tokens.push_back("(");
-    possible_tokens.push_back(")");
-    possible_tokens.push_back("||"); 
-    possible_tokens.push_back(",");
-    possible_tokens.push_back("&&");
-    possible_tokens.push_back("\"");
-    possible_tokens.push_back(";");
+    possible_tokens.push_back(Token("==", "condition operator"));
+    possible_tokens.push_back(Token("<-", "query operator"));
+    possible_tokens.push_back(Token("!=", "condition operator"));
+    possible_tokens.push_back(Token("<=", "condition operator"));
+    possible_tokens.push_back(Token(">=", "condition operator"));
+    possible_tokens.push_back(Token("<", "condition operator"));
+    possible_tokens.push_back(Token(">", "condition operator"));
+    possible_tokens.push_back(Token("+", "operator"));
+    possible_tokens.push_back(Token("-", "operator"));
+    possible_tokens.push_back(Token("JOIN", "operator"));
+    possible_tokens.push_back(Token("*", "operator"));
+    possible_tokens.push_back(Token("(", "opening parenthesis"));
+    possible_tokens.push_back(Token(")", "closing parenthesis"));
+    possible_tokens.push_back(Token("||", "conjunction")); 
+    possible_tokens.push_back(Token(",", "comma"));
+    possible_tokens.push_back(Token("&&", "conjunction"));
+    possible_tokens.push_back(Token("\"", "quotes"));
+    possible_tokens.push_back(Token(";", "semicolon"));
   //literals: VARCHAR INTEGER
 
   while(this->position < text->size()) {
     bool found_command = false;
-    for(string& i: possible_tokens) {
+    for(Token& i: possible_tokens) {
 
-      if(this->match(text, position, i)) {
+      if(this->match(text, position, i.get_Value())) {
         this->tokens.push_back(i);
 
-        this->position += i.size();
+        this->position += i.get_Value().size();
       
         found_command = true;
         break;
@@ -96,16 +96,16 @@ Tokenizer::Tokenizer(string* text) : position(0), index(0), point(0)
     char c = (*text)[position];
 
     if(isdigit(c)) {
-      string temp = this->get_Integer(text, position);
+      Token temp(this->get_Integer(text, position), "digit");
       this->tokens.push_back(temp);
-      this->position += temp.size();
+      this->position += temp.get_Value().size();
       continue;
     }
 
     if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c == '_')) {
-      string temp = this->get_Varchar(text, position);
+      Token temp(this->get_Varchar(text, position), "relation name");
       this->tokens.push_back(temp);
-      this->position += temp.size();
+      this->position += temp.get_Value().size();
       continue;
     }
 
@@ -162,5 +162,5 @@ string Tokenizer::get_Varchar(string* text, int position)
 
 void Tokenizer::increase_Index(int addend)
 {
-  this->index =+ addend;
+  this->index += addend;
 }
