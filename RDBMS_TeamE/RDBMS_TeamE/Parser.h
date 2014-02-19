@@ -14,6 +14,7 @@ private:
   Tokenizer tokenizer;
   string command;
   DB_Engine* db;
+  string new_relation;
 
   vector<string> attributes;       // holds attribute lists 
   vector<Attribute> typed_attributes; // holds typed attribute lists
@@ -33,15 +34,15 @@ public:
   
 	// parsing helper functions, called by parse()
   // query parsing functions
-  bool parse_Query();
+  pair<bool, Table> parse_Query();
 
   string parse_Relation();
 
   bool parse_Identifier();
-  bool parse_Expression();
+  pair<bool, Table> parse_Expression();
   bool parse_Atomic();
 
-  //pair<bool, pair<vector<Condition>> > parse_Condition();
+  //Parses Conditions for Select, Update and Delete
   pair<bool, vector<Condition>> parse_Condition_List();
 
   bool parse_Conjunction();
@@ -61,6 +62,7 @@ public:
   pair<bool,Attribute> parse_Literal();
   pair<bool,vector<Attribute>> parse_Literal_List();
 
+  //Attributes parseing function used to insert, rename, and update
   pair<bool, Attribute> parse_Typed_Attribute();
   pair<bool,Tuple> parse_Typed_Attribute_List();
 

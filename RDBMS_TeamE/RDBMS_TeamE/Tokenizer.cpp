@@ -3,12 +3,14 @@
 
 Tokenizer::Tokenizer(){}
 
-void Tokenizer::checkpoint()
+//For Rolling back transactions
+void Tokenizer::checkpoint() 
 {
   this->point = this->index;
 }
 
-void Tokenizer::back_Up()
+//Useing in conjunction with checkpoint to roll back
+void Tokenizer::back_Up() 
 {
   this->index = this->point;
 }
@@ -25,6 +27,7 @@ bool Tokenizer::consume_Token(string in)
   return false;
 }
 
+//Return token without consuming
 Token Tokenizer::get_Token()
 {
   if(this->index == this->tokens.size()) {
@@ -34,6 +37,8 @@ Token Tokenizer::get_Token()
   return tokens[index];
 }
 
+/*First step to parse a command, this breaks it into tokens (simply strings) and puts 
+them in order in the tokenizer vector for the parse to parse from*/
 Tokenizer::Tokenizer(string* text) : position(0), index(0), point(0)
 {
   vector<Token> possible_tokens;

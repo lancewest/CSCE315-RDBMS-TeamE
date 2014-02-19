@@ -98,11 +98,21 @@ bool Tuple::equal_On_Keys(Tuple t, vector<Attribute> keys)
 
 Attribute* Tuple::get_Attribute(string attribute_name)
 {
-  for(Attribute a : attributes){
+  for(Attribute& a : attributes){
     if(a.get_Name() == attribute_name)
       return &a;
   }
 
   return new Attribute("null",false,"empty_attribute",1);
+}
+
+Attribute Tuple::get_Attribute_Copy(string attribute_name)
+{
+  for(Attribute a : attributes){
+    if(a.get_Name() == attribute_name)
+      return a;
+  }
+
+  return Attribute("null",false,"empty_attribute",1);
 }
 

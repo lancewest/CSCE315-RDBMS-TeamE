@@ -7,9 +7,9 @@ class Table
 {
 private:
   string name;
-  vector<Tuple> tuples;
   Tuple template_tuple;
 public:
+  vector<Tuple> tuples;
   Table(string n, Tuple template_t);
   Table(string n, Tuple template_t, vector<Tuple> t);
 

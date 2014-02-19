@@ -12,6 +12,7 @@ public:
   DB_Engine();
 
   void create_Table(string name, Tuple template_tuple);
+  void add_Table(Table* table);
     
   void open(string directory); //opens and imports the SQL of all files in a directory into our object structure (Tables, Attributes, Tuples)
   void write(Table table);     //Writes a given table into SQL instruction to a file in the database
@@ -25,8 +26,10 @@ public:
  
   void erase(Table table);              //Deletes an entire Table
   void erase(Table table, Tuple tuple); //Deletes a Tuple in a Table
+  void erase(Table& table, vector<Condition> conditions); //Deletes all tuples in a table that match the conditions
 
   Table select(Table table, string attr_name, bool (*f) (Attribute)); //Returns a table containing only the tuples satisfying the condition f
+  Table select(Table table, vector<Condition> conditions); //Returns a table containing only the tuples satisfying all conditions
   Table project(Table table, Tuple attributes); //Returns a Table which is the projection of a table over a list of attributes
 
   Table rename(vector<string> new_attr_names, Table table); //Replaces the attribute names in the table with new_attribute_names
@@ -43,5 +46,5 @@ public:
   Table* get_Table(string table_name);
   bool tuple_Meets_Conditions(Tuple t, vector<Condition> c); //Helper for Update and Select
   bool attribute_Meets_Condition(Attribute a, Condition c); //Helper for Update and Select
-  void make_Assignments(Tuple t, vector<pair<string,string>> assignments); //Helper for Update
+  void make_Assignments(Tuple& t, vector<pair<string,string>> assignments); //Helper for Update
 };

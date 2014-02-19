@@ -9,7 +9,7 @@ Table::Table(string n, Tuple template_t, vector<Tuple> t) : name(n), template_tu
 void Table::insert(Tuple new_tuple)
 {
   for(Tuple& i: this->tuples) {
-    if(i.is_Primarily_Equal(new_tuple)) {
+    if(!i.is_Primarily_Equal(new_tuple)) {
 	  return;
 	}
   }

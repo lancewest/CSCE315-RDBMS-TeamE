@@ -13,6 +13,10 @@ void DB_Engine::create_Table(string name, Tuple template_tuple)
   this->tables.push_back(new_table);
 }
 
+void DB_Engine::add_Table(Table* table)
+{
+  tables.push_back(*table);
+}
 
 void DB_Engine::open(string directory)
 {
@@ -98,7 +102,7 @@ void DB_Engine::show(Table table)
 //But only if the all of the attributes in a single tuple follow any conditions that may apply to that specific attribute
 void DB_Engine::update(Table& table, vector<pair<string,string>> assignments, vector<Condition> conditions)
 {
-  for(Tuple& t : table.get_Tuples())
+  for(Tuple& t : table.tuples)
   {
     if(this->tuple_Meets_Conditions(t,conditions)){
       this->make_Assignments(t, assignments);
@@ -134,6 +138,23 @@ void DB_Engine::erase(Table table, Tuple tuple)
   }
 }
 
+void DB_Engine::erase(Table& table, vector<Condition> conditions)
+{
+  vector<Tuple> to_delete = vector<Tuple>();
+
+  for(Tuple& t : table.tuples)
+  {
+    if(this->tuple_Meets_Conditions(t,conditions)){
+      to_delete.push_back(t);
+    }
+  }
+
+  for(Tuple t : to_delete)
+  {
+    erase(table, t);
+  }
+}
+
 // selects all tuples whose attributes pass the testing function f
 Table DB_Engine::select(Table table, string attr_name, bool (*f) (Attribute))
 {
@@ -145,6 +166,26 @@ Table DB_Engine::select(Table table, string attr_name, bool (*f) (Attribute))
 	    new_table.insert(i);
 	  }
 	}
+  }
+
+  return new_table;
+}
+
+Table DB_Engine::select(Table table, vector<Condition> conditions)
+{
+  vector<Tuple> selected = vector<Tuple>();
+  Table new_table = Table( "Selection", table.get_Template_Tuple() );
+
+  for(Tuple& t : table.tuples)
+  {
+    if(this->tuple_Meets_Conditions(t,conditions)){
+      selected.push_back(t);
+    }
+  }
+
+  for(Tuple t : selected)
+  {
+    new_table.insert(t);
   }
 
   return new_table;
@@ -299,27 +340,21 @@ bool DB_Engine::tuple_Meets_Conditions(Tuple t, vector<Condition> conditions)
 {
   bool conditions_met; 
 
-  for(Attribute a : t.get_Attributes()){
-    conditions_met = attribute_Meets_Condition(a,conditions[0]);
+  conditions_met = attribute_Meets_Condition( t.get_Attribute_Copy(conditions[0].attribute), conditions[0] );
 
-    for(int i = 1 ; i<conditions.size() ; i++) {
+  for(int i = 1 ; i<conditions.size() ; i++) {
 
-      if(conditions[i].conjunction == "&&")
-        conditions_met = conditions_met && attribute_Meets_Condition(a,conditions[i]);
-      else if(conditions[i].conjunction == "||")
-        conditions_met = conditions_met || attribute_Meets_Condition(a,conditions[i]);
-      else
-        cout << "Error: DB_Engine, ln 306";
-    }
+    if(conditions[i-1].conjunction == "&&")
+      conditions_met = conditions_met && attribute_Meets_Condition( t.get_Attribute_Copy(conditions[i].attribute), conditions[i] );
+    else if(conditions[i-1].conjunction == "||")
+      conditions_met = conditions_met || attribute_Meets_Condition( t.get_Attribute_Copy(conditions[i].attribute), conditions[i] );
   }
+
   return conditions_met;
 }
 
 bool DB_Engine::attribute_Meets_Condition(Attribute a, Condition c)
 {
-  if(a.get_Name() != c.attribute) //Condition not for this attribute
-      return true;
-
   if(a.is_Int()) //attribute a is int based
   {
     int value = atoi(c.value.c_str());
@@ -404,7 +439,7 @@ bool DB_Engine::attribute_Meets_Condition(Attribute a, Condition c)
   return true;
 }
 
-void DB_Engine::make_Assignments(Tuple t, vector<pair<string,string>> assignments)
+void DB_Engine::make_Assignments(Tuple& t, vector<pair<string,string>> assignments)
 {
   for(pair<string,string> assign : assignments)
   {

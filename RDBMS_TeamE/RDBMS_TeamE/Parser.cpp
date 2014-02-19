@@ -6,6 +6,7 @@ using namespace std;
 //constructor
 Parser::Parser(DB_Engine* db_ptr, string c) : db(db_ptr), command(c), tokenizer(&c) {}
 
+//Tries to parse a command first and if not in command format then parses query
 bool Parser::parse()
 {
   if(this->tokenizer.get_Token().get_Kind() == "command") {
@@ -15,9 +16,14 @@ bool Parser::parse()
   Token operand_relation_name = this->tokenizer.get_Token();
 	if(operand_relation_name.get_Kind() == "relation name") {
     this->tokenizer.increase_Index();
+
     if(this->tokenizer.get_Token().get_Kind() == "query operator") {
       this->tokenizer.increase_Index();
-      return parse_Query();
+
+      pair<bool, Table> result = parse_Query();
+      result.second.set_Name(operand_relation_name.get_Value());
+      db->add_Table(&(result.second));
+      return result.first;
     }
   }
 
@@ -124,7 +130,7 @@ bool Parser::parse_Command()
                 
             pair<bool,vector<string>> primes = this->parse_Attribute_List();
 
-            for(Attribute a : attributes.second.get_Attributes()) {
+            for(Attribute& a : attributes.second.get_Attributes()) {
               for(string prime : primes.second) {
                 if(a.get_Name() == prime)
                   a.set_Is_Primary(true);
@@ -167,9 +173,14 @@ bool Parser::parse_Command()
           return true;
         }
 
-         if(this->tokenizer.consume_Token("VALUES FROM RELATION") &&
-            this->parse_Expression()) {
-              return true;
+         if(this->tokenizer.consume_Token("VALUES FROM RELATION") )
+         {
+            pair<bool, Table> to_insert = this->parse_Expression();
+
+            for(Tuple t : to_insert.second.get_Tuples())
+              db->insert( *(db->get_Table(relation_name.get_Value())), t );
+
+            return to_insert.first;
          }
       }
     }
@@ -178,105 +189,107 @@ bool Parser::parse_Command()
   //DELETE FROM
   if(this->tokenizer.get_Token().get_Value() == "DELETE FROM") {
 
-    if(this->tokenizer.consume_Token("DELETE FROM") &&
-       this->tokenizer.get_Token().get_Kind() == "relation name") {
+    if(this->tokenizer.consume_Token("DELETE FROM") ) {
 
-         this->tokenizer.increase_Index();
+      Token relation_to_delete = this->tokenizer.get_Token();
+      if(relation_to_delete.get_Kind() == "relation name") {
+        this->tokenizer.increase_Index();
 
-         if(this->tokenizer.consume_Token("WHERE") &&
-           this->parse_Condition_List().first) {
-               return true;
-         }
+        if(this->tokenizer.consume_Token("WHERE") ) {
+
+          pair<bool, vector<Condition>> conditions = this->parse_Condition_List();
+          if(conditions.first) {
+            db->erase( *(db->get_Table(relation_to_delete.get_Value())), conditions.second );
+            return true;
+          }
+        }
+      }
     }
   }
 
   return false;
 }
 
-bool Parser::parse_Query()
+pair<bool, Table> Parser::parse_Query()
 {
   //select
   if(this->tokenizer.get_Token().get_Value() == "select") {
 
-    if(this->tokenizer.consume_Token("select") &&
-       this->parse_Condition_List().first) {
+    if(this->tokenizer.consume_Token("select") ) {
 
-         if(this->parse_Expression()) {
-               return true;
-         }
+      pair<bool, vector<Condition>> conditions = this->parse_Condition_List();
+      if(conditions.first) {
+
+          pair<bool, Table> result = this->parse_Expression();
+          if(result.first)
+            return pair<bool,Table>(true, db->select( result.second, conditions.second) );
+      }
     }
   }
 
   //project
   if(this->tokenizer.get_Token().get_Value() == "project") {
 
-    if(this->tokenizer.consume_Token("project") &&
-       this->parse_Attribute_List().first) {
+    if(this->tokenizer.consume_Token("project") ) {
 
-         if(this->parse_Expression()) {
-           return true;
-         }
+      pair<bool,vector<string>> attribute_list = this->parse_Attribute_List();
+      vector<Attribute> attributes = vector<Attribute>();
+      for(string a : attribute_list.second){
+        attributes.push_back( Attribute(1,false,a) );
+      }
+
+      if(attribute_list.first) {
+
+         pair<bool,Table> result = this->parse_Expression();
+         if(result.first)
+           return pair<bool,Table>(true, db->project( result.second, Tuple(attributes) ) );
+      }
     }
   }
 
   //rename
   if(this->tokenizer.get_Token().get_Value() == "rename") {
-    if(this->tokenizer.consume_Token("rename") &&
-       this->parse_Attribute_List().first) {
+    if(this->tokenizer.consume_Token("rename") ) {
 
-         if(this->parse_Expression()) {
-           return true;
-         }
+      pair<bool,vector<string>> attributes = this->parse_Attribute_List();
+      if(attributes.first) {
+
+        pair<bool, Table> result = this->parse_Expression();
+        if(result.first)
+          return pair<bool,Table>(true, db->rename(attributes.second,  result.second) );
+      }
     }
   }
 
-   if(this->parse_Expression()) {
+    pair<bool, Table> op1 = this->parse_Expression();
+    if(op1.first) {
 
     //JOIN
     if(this->tokenizer.consume_Token("JOIN")) {
-      return this->parse_Expression();
+      pair<bool, Table> op2 = this->parse_Expression();
+      return pair<bool, Table>(true, db->natural_Join( op1.second, op2.second ) );
     }
     //*
     if(this->tokenizer.consume_Token("*")) {
-      return this->parse_Expression();
+      pair<bool, Table> op2 = this->parse_Expression();
+      return pair<bool, Table>(true, db->cartessian_Tables( op1.second, op2.second ) );
     }
     //+
     if(this->tokenizer.consume_Token("+")) {
-      return this->parse_Expression();
+      pair<bool, Table> op2 = this->parse_Expression();
+      return pair<bool, Table>(true, db->union_Tables( op1.second, op2.second ) );
     }
     //-
     if(this->tokenizer.consume_Token("-")) {
-      return this->parse_Expression();
+      pair<bool, Table> op2 = this->parse_Expression();
+      return pair<bool, Table>(true, db->difference_Tables( op1.second, op2.second) );
     }
   }
 
   return this->parse_Expression();
 }
 
-/*bool Parser::parse_Condition()
-{
-    if(this->tokenizer.get_Token().get_Kind() == "relation name") {
-      this->tokenizer.increase_Index();
-    }
-    else if(!this->parse_Literal()) {
-      return false;
-    }
-
-    if(this->tokenizer.get_Token().get_Kind() == "condition operator") {
-       this->tokenizer.increase_Index();
-
-       if(this->tokenizer.get_Token().get_Kind() == "relation name") {
-         this->tokenizer.increase_Index();
-       }
-
-       else if(!this->parse_Literal()) {
-         return false;
-       }
-    }
-
-  return true;
-}*/
-
+/*Generates vector of all conditions listed and the connecting conjunctions*/
 pair<bool, vector<Condition>> Parser::parse_Condition_List()
 {
   //While loop that reads in an attribute, operator, value, and possibly a conjunction all at the same time to make list of conditions
@@ -287,16 +300,18 @@ pair<bool, vector<Condition>> Parser::parse_Condition_List()
   tokenizer.increase_Index();
   Token compare_operator = this->tokenizer.get_Token();
   tokenizer.increase_Index();
+  tokenizer.consume_Token("\"");
   Token value = this->tokenizer.get_Token();
   tokenizer.increase_Index();
+  tokenizer.consume_Token("\"");
   Token conjunction = this->tokenizer.get_Token();
   tokenizer.increase_Index();
 
-  while(conjunction.get_Value() != ";") {
+  while(conjunction.get_Value() != ";" && conjunction.get_Value() != ")") {
 
-    if(conditional_attribute.get_Kind() == "relation name" 
-        || compare_operator.get_Kind() == "condition operator" 
-        || conjunction.get_Kind() == "conjunction") {
+    if(conditional_attribute.get_Kind() != "relation name" 
+        || compare_operator.get_Kind() != "condition operator" 
+        || conjunction.get_Kind() != "conjunction") {
 
       return pair<bool, vector<Condition>>(false,vector<Condition>());
     }
@@ -307,34 +322,41 @@ pair<bool, vector<Condition>> Parser::parse_Condition_List()
     tokenizer.increase_Index();
     compare_operator = this->tokenizer.get_Token();
     tokenizer.increase_Index();
+    tokenizer.consume_Token("\"");
     value = this->tokenizer.get_Token();
     tokenizer.increase_Index();
+    tokenizer.consume_Token("\"");
     conjunction = this->tokenizer.get_Token();
     tokenizer.increase_Index();
   }
 
+  conditions.push_back( Condition(conditional_attribute.get_Value(), compare_operator.get_Value(), value.get_Value(), conjunction.get_Value()) );
+
   return pair<bool, vector<Condition>>(true, conditions);
 }
 
-bool Parser::parse_Expression()
+pair<bool, Table> Parser::parse_Expression()
 {
   this->tokenizer.consume_Token("(");
   this->tokenizer.consume_Token(")");
 
-  if(this->tokenizer.get_Token().get_Kind() == "relation name" ||
-     this->tokenizer.get_Token().get_Kind() == "semicolon") {
+  if(this->tokenizer.get_Token().get_Kind() == "relation name" )
+    return pair<bool, Table>(true, *(db->get_Table(this->tokenizer.get_Token().get_Value())));
+
+  if(this->tokenizer.get_Token().get_Kind() == "semicolon") {
     this->tokenizer.increase_Index();
     //this->tokenizer.consume_Token(")");
-    return true;
+    return pair<bool, Table>(true, Table("Empty", Tuple()));
   }
 
   else {
     return this->parse_Query();
   }
 
-  return false;
+  return pair<bool, Table>( false, Table("Empty", Tuple()) );
 }
 
+//Parses exclusively for assignments to be used on selected tuples during update
 pair< bool, vector<pair<string,string>> > Parser::parse_Assignment_List()
 {
   this->tokenizer.consume_Token("(");
@@ -363,15 +385,12 @@ pair<bool, pair<string,string>> Parser::parse_Assignment()
   if(attribute_name.get_Kind() == "relation name") {
     this->tokenizer.increase_Index();
 
-    if(tokenizer.consume_Token("=")) {
-      pair<bool,Attribute> lit = this->parse_Literal();
+    pair<bool,Attribute> lit = this->parse_Literal();
 
-      string value = lit.second.is_Int() ? to_string(lit.second.get_Int_Value()) : lit.second.get_String_Value();
+    string value = lit.second.is_Int() ? to_string(lit.second.get_Int_Value()) : lit.second.get_String_Value();
 
-      if(lit.first) {
-        return pair<bool, pair<string,string>>( true, pair<string,string>(attribute_name.get_Value(), value) );
-      }
-      
+    if(lit.first) {
+      return pair<bool, pair<string,string>>( true, pair<string,string>(attribute_name.get_Value(), value) );
     }
   }
   return pair<bool, pair<string,string>>( false, pair<string,string>("","") );
