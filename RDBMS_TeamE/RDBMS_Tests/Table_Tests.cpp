@@ -5,6 +5,7 @@
 #include "Table.cpp"
 #include "Attribute.cpp"
 #include "Tuple.cpp"
+#include "Condition.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -16,7 +17,7 @@ namespace RDBMS_Tests
 		
     TEST_METHOD(test_Table_getName)
     {
-      Table *table = new Table("Test Table Name");
+      Table *table = new Table("Test Table Name", Tuple());
 
       Assert::AreEqual<string>(table->get_Name(), "Test Table Name");
     }
@@ -37,7 +38,7 @@ namespace RDBMS_Tests
       tuple2_attributes.push_back(*client_name2);
       Tuple *tuple2 = new Tuple(tuple2_attributes);
 
-      Table *table = new Table("Clients");
+      Table *table = new Table("Clients",*tuple1);
 
       table->insert(*tuple1);
       table->insert(*tuple2);
@@ -63,7 +64,7 @@ namespace RDBMS_Tests
       tuple2_attributes.push_back(*client_name2);
       Tuple *tuple2 = new Tuple(tuple2_attributes);
 
-      Table *table = new Table("Clients");
+      Table *table = new Table("Clients", *tuple1);
 
       table->insert(*tuple1);
       table->insert(*tuple2);
@@ -91,7 +92,7 @@ namespace RDBMS_Tests
       tuples.push_back(*tuple1);
       tuples.push_back(*tuple2);
 
-      Table *table = new Table("Clients", tuples);
+      Table *table = new Table("Clients", *tuple1, tuples);
 
       Assert::AreEqual<int>(table->get_Tuples().size(), 2);
       Assert::IsTrue(table->get_Tuples()[0] == *tuple1);
@@ -136,7 +137,7 @@ namespace RDBMS_Tests
       tuples.push_back(*tuple1);
       tuples.push_back(*tuple2);
 
-      Table *table = new Table("Clients", tuples);
+      Table *table = new Table("Clients", *tuple1, tuples);
 
       table->remove(*tuple1);
 
@@ -205,7 +206,7 @@ namespace RDBMS_Tests
       tuples.push_back(*tuple1);
       tuples.push_back(*tuple2);
 
-      Table *table = new Table("Clients", tuples);
+      Table *table = new Table("Clients", *tuple1, tuples);
 
       return *table;
     }
@@ -230,7 +231,7 @@ namespace RDBMS_Tests
       tuples.push_back(*tuple1);
       tuples.push_back(*tuple2);
 
-      Table *table = new Table("Clients", tuples);
+      Table *table = new Table("Clients", *tuple1, tuples);
 
       return *table;
     }
@@ -263,7 +264,7 @@ namespace RDBMS_Tests
       tuples.push_back(*tuple2);
       tuples.push_back(*tuple3);
 
-      Table *table = new Table("Accounts", tuples);
+      Table *table = new Table("Accounts", *tuple1, tuples);
 
       return *table;
     }
@@ -280,7 +281,7 @@ namespace RDBMS_Tests
       vector<Tuple> tuples;
       tuples.push_back(*tuple1);
 
-      Table *table = new Table("Fruits", tuples);
+      Table *table = new Table("Fruits", *tuple1, tuples);
 
       return *table;
     }

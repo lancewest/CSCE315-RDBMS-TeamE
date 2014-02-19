@@ -89,20 +89,20 @@ bool Tuple::is_Compatible(Tuple t)
 bool Tuple::equal_On_Keys(Tuple t, vector<Attribute> keys)
 {
   for(Attribute a : keys){
-    if( get_Attribute(a.get_Name()) != t.get_Attribute(a.get_Name()) )
+    if( *(get_Attribute(a.get_Name())) != *(t.get_Attribute(a.get_Name())) )
       return false;
     }
 
     return true;
 }
 
-Attribute Tuple::get_Attribute(string attribute_name)
+Attribute* Tuple::get_Attribute(string attribute_name)
 {
   for(Attribute a : attributes){
     if(a.get_Name() == attribute_name)
-      return a;
+      return &a;
   }
 
-  return *new Attribute("null",false,"empty_attribute",1);
+  return new Attribute("null",false,"empty_attribute",1);
 }
 

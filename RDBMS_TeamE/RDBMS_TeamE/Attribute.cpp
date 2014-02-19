@@ -92,3 +92,23 @@ int Attribute::get_Length()
 {
   return this->length;
 }
+
+void Attribute::set_String_Value(string val)
+{
+  string_val = val;
+}
+
+void Attribute::set_Int_Value(int val)
+{
+  int_val = val;
+}
+
+void Attribute::set_Is_Primary(bool val)
+{
+  is_primary = val;
+}
+
+void Attribute::set_Length(int l)
+{
+  length = l;
+}

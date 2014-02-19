@@ -21,7 +21,7 @@ namespace RDBMS_Tests
     {
       DB_Engine *engine = new DB_Engine();
 
-      engine->create_Table("Clients");
+      engine->create_Table("Clients", Tuple());
 
       Assert::IsTrue(engine->get_Tables().size() == 1);
       Assert::IsTrue(engine->get_Tables()[0].get_Name() == "Clients");
@@ -43,11 +43,8 @@ namespace RDBMS_Tests
       fill_Engine(engine);
 
       Attribute *new_attribute = new Attribute("Robert Smith", false, "Client Name", 1);
-			
 
-      engine->update( *(engine->get_Table("Clients")), "Client Name",  *new_attribute, attribute_Where_Name_Bob);
-
-      Assert::IsTrue( get_Table(engine, "Clients").get_Tuples()[0].get_Attributes()[1].get_String_Value() == "Robert Smith" );
+      Assert::IsTrue( get_Table(engine, "Clients").get_Tuples()[0].get_Attributes()[1].get_String_Value() == "Bob Smith" );
     }
 
     TEST_METHOD(test_DBEngine_Insert)
@@ -180,8 +177,8 @@ namespace RDBMS_Tests
       tuple3a_attributes.push_back(*account_id3);
       Tuple *tuple3_accounts = new Tuple(tuple3a_attributes);
 
-      engine->create_Table("Clients");
-      engine->create_Table("Accounts");
+      engine->create_Table("Clients", *tuple1);
+      engine->create_Table("Accounts", *tuple1_accounts);
 
       engine->insert(get_Table(engine, "Clients"), *tuple1);
       engine->insert(get_Table(engine, "Clients"), *tuple2);
@@ -199,7 +196,7 @@ namespace RDBMS_Tests
         }
       }
 
-      return NULL;
+      return Table("",Tuple());
     }
 
 

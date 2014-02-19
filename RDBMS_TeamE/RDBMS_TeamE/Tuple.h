@@ -19,7 +19,7 @@ public:
   bool is_Primarily_Equal(Tuple t);
   bool is_Compatible(Tuple t);
   bool equal_On_Keys(Tuple t, vector<Attribute> keys);
-  Attribute get_Attribute(string attribute_name);
+  Attribute* get_Attribute(string attribute_name);
 };
 
 inline ostream& operator<<(ostream& os, Tuple& t)

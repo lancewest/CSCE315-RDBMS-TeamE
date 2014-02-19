@@ -79,9 +79,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Attribute.h" />
+    <ClInclude Include="Condition.h" />
     <ClInclude Include="DB_Engine.h" />
     <ClInclude Include="Parser.h" />
-    <ClInclude Include="Simple_Parser.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="Tokenizer.h" />
@@ -89,9 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Attribute.cpp" />
+    <ClCompile Include="Condition.cpp" />
     <ClCompile Include="DB_Engine.cpp" />
     <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="Simple_Parser.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="Tokenizer.cpp" />

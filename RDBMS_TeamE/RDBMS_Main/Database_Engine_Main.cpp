@@ -10,6 +10,7 @@
 #include "Tokenizer.h"
 #include "parser.h"
 #include "Simple_Parser.h"
+#include "Condition.h"
 
 bool f(Attribute a) {
 	return true;

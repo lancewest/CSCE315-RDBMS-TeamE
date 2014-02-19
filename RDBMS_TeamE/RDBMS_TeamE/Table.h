@@ -2,15 +2,16 @@
 
 #include "Tuple.h"
 
+
 class Table
 {
 private:
   string name;
   vector<Tuple> tuples;
+  Tuple template_tuple;
 public:
-  Table();
-  Table(string n); 
-  Table(string n, vector<Tuple> t);
+  Table(string n, Tuple template_t);
+  Table(string n, Tuple template_t, vector<Tuple> t);
 
   void insert(Tuple new_tuple);          //Inserts a new Tuple into a Table
   bool is_Union_Compatible(Table table); //Checks another table for union compatibility
@@ -22,6 +23,7 @@ public:
   string get_Name();                     //Returns Table name
   void set_Name(string new_name);        //Sets Table name
   vector<Tuple> get_Tuples();            //Returns the Tuples vector
+  Tuple get_Template_Tuple();
 
   void show(); //For debugging
 

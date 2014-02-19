@@ -21,7 +21,7 @@ private:
   //vector<Type> types;
 
 public:
-  Parser(string c);
+  Parser(DB_Engine* db_ptr, string c);
     
   // The application will function with a bare minimum of create, insert, and select.
 
@@ -41,8 +41,8 @@ public:
   bool parse_Expression();
   bool parse_Atomic();
 
-  bool parse_Condition();
-  bool parse_Condition_List();
+  //pair<bool, pair<vector<Condition>> > parse_Condition();
+  pair<bool, vector<Condition>> parse_Condition_List();
 
   bool parse_Conjunction();
   bool parse_Comparison();
@@ -50,18 +50,19 @@ public:
   string parse_Op();
   string parse_Attribute_Name();
 
-  bool parse_Attribute();
-  bool parse_Attribute_List();
+  pair<bool,string> parse_Attribute();
+  pair<bool,vector<string>> parse_Attribute_List();
 
   //command parsing functions
   bool parse_Command();
-  bool parse_Assignment();
+  pair< bool, vector<pair<string,string>> > parse_Assignment_List();
+  pair<bool, pair<string,string>> parse_Assignment();
 
-  bool parse_Literal();
-  bool parse_Literal_List();
+  pair<bool,Attribute> parse_Literal();
+  pair<bool,vector<Attribute>> parse_Literal_List();
 
-  bool parse_Typed_Attribute();
-  bool parse_Typed_Attribute_List();
+  pair<bool, Attribute> parse_Typed_Attribute();
+  pair<bool,Tuple> parse_Typed_Attribute_List();
 
   bool parse_Var_Type();
   bool parse_Int_Type();

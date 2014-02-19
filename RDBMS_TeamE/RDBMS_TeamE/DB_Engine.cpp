@@ -5,9 +5,11 @@
 #include <fstream>
 
 
-void DB_Engine::create_Table(string name)
+DB_Engine::DB_Engine() : tables() { }
+
+void DB_Engine::create_Table(string name, Tuple template_tuple)
 {
-  Table new_table = Table(name);
+  Table new_table = Table(name, template_tuple);
   this->tables.push_back(new_table);
 }
 
@@ -24,7 +26,7 @@ void DB_Engine::open(string directory)
     while (getline(my_read_file, output, ';')) {
       output.push_back(';');
       cout << output << endl;
-      Parser open_file = Parser(output);
+      Parser open_file = Parser(this, output);
     
       bool ret = open_file.parse();
 
@@ -92,16 +94,15 @@ void DB_Engine::show(Table table)
   table.show();
 }
 
-//Set attributes in column attr_name to attr if they pass the test function f
-//only updates one attribute at a time
-void DB_Engine::update(Table& table, string attr_name, Attribute attr, bool (*f)(Attribute))
+//Set attributes listed in pair.first of assignments to the value in pair.second
+//But only if the all of the attributes in a single tuple follow any conditions that may apply to that specific attribute
+void DB_Engine::update(Table& table, vector<pair<string,string>> assignments, vector<Condition> conditions)
 {
-  vector<Attribute> attributes = table.get_Column(attr_name);
-
-  for(unsigned int i = 0; i < attributes.size(); ++i) {
-    if( (*f)(attributes[i]) ) {
-	  table.replace_Attribute(attr_name, attr, i);
-	}
+  for(Tuple& t : table.get_Tuples())
+  {
+    if(this->tuple_Meets_Conditions(t,conditions)){
+      this->make_Assignments(t, assignments);
+    }
   }
 }
 
@@ -136,7 +137,7 @@ void DB_Engine::erase(Table table, Tuple tuple)
 // selects all tuples whose attributes pass the testing function f
 Table DB_Engine::select(Table table, string attr_name, bool (*f) (Attribute))
 {
-  Table new_table;
+  Table new_table("New Table", table.get_Template_Tuple());
 
   for(Tuple& i: table.get_Tuples()) {
     for(Attribute& j: i.get_Attributes()) {
@@ -169,7 +170,7 @@ Table DB_Engine::project(Table table, Tuple attributes)
     new_tuples.push_back(*new_tuple);
   }
   
-  Table *new_table = new Table(table.get_Name() + " Projection", new_tuples);
+  Table *new_table = new Table(table.get_Name() + " Projection", table.get_Template_Tuple(), new_tuples);
 
   return *new_table;
 }
@@ -185,8 +186,8 @@ Table DB_Engine::rename(vector<string> names, Table table)
 	  j.set_Name(names
 
   return new_table;*/
-  Table t;
-  return t;
+  
+  return table;
 }
 
 Table DB_Engine::union_Tables(Table table1, Table table2)
@@ -233,7 +234,7 @@ Table DB_Engine::natural_Join(Table table1, Table table2)
     }
   }
 
-  Table *joined = new Table(table1.get_Name() + " joined with " + table2.get_Name(), new_tuples);
+  Table *joined = new Table(table1.get_Name() + " joined with " + table2.get_Name(), table1.get_Template_Tuple(), new_tuples);
 
   return *joined;
 }
@@ -254,9 +255,14 @@ vector<Attribute> DB_Engine::get_Common_Attributes(Table table1, Table table2)
   return common_attributes;
 }
 
-void DB_Engine::close()
+void DB_Engine::close(string relation_name)
 {
-  //Not needed for current deliverable
+  erase( *(this->get_Table(relation_name)) );
+}
+
+void DB_Engine::exit()
+{
+  tables.clear();
 }
 
 int DB_Engine::find(string name)
@@ -287,4 +293,126 @@ Table* DB_Engine::get_Table(string table_name)
 vector<Table> DB_Engine::get_Tables() const
 {
   return this->tables;
+}
+
+bool DB_Engine::tuple_Meets_Conditions(Tuple t, vector<Condition> conditions)
+{
+  bool conditions_met; 
+
+  for(Attribute a : t.get_Attributes()){
+    conditions_met = attribute_Meets_Condition(a,conditions[0]);
+
+    for(int i = 1 ; i<conditions.size() ; i++) {
+
+      if(conditions[i].conjunction == "&&")
+        conditions_met = conditions_met && attribute_Meets_Condition(a,conditions[i]);
+      else if(conditions[i].conjunction == "||")
+        conditions_met = conditions_met || attribute_Meets_Condition(a,conditions[i]);
+      else
+        cout << "Error: DB_Engine, ln 306";
+    }
+  }
+  return conditions_met;
+}
+
+bool DB_Engine::attribute_Meets_Condition(Attribute a, Condition c)
+{
+  if(a.get_Name() != c.attribute) //Condition not for this attribute
+      return true;
+
+  if(a.is_Int()) //attribute a is int based
+  {
+    int value = atoi(c.value.c_str());
+
+    if(c.compare_operator == "=="){
+      if(a.get_Int_Value() == value)
+        return true;
+      else
+        return false;
+    }
+    else if(c.compare_operator == "!="){
+      if(a.get_Int_Value() != value)
+        return true;
+      else
+        return false;
+    }
+    else if(c.compare_operator == "<="){
+      if(a.get_Int_Value() <= value)
+        return true;
+      else
+        return false;
+    }
+    else if(c.compare_operator == ">="){
+      if(a.get_Int_Value() >= value)
+        return true;
+      else
+        return false;
+    }
+    else if(c.compare_operator == "<"){
+      if(a.get_Int_Value() < value)
+        return true;
+      else
+        return false;
+    }
+    else if(c.compare_operator == ">"){
+      if(a.get_Int_Value() > value)
+        return true;
+      else
+        return false;
+    }
+  }
+  else //attribute a is string based
+  {
+    if(c.compare_operator == "=="){
+      if(a.get_String_Value() == c.value)
+        return true;
+      else
+        return false;
+    }
+    else if(c.compare_operator == "!="){
+      if(a.get_String_Value() != c.value)
+        return true;
+      else
+        return false;
+    }
+    else if(c.compare_operator == "<="){
+      if(a.get_String_Value() <= c.value)
+        return true;
+      else
+        return false;
+    }
+    else if(c.compare_operator == ">="){
+      if(a.get_String_Value() >= c.value)
+        return true;
+      else
+        return false;
+    }
+    else if(c.compare_operator == "<"){
+      if(a.get_String_Value() < c.value)
+        return true;
+      else
+        return false;
+    }
+    else if(c.compare_operator == ">"){
+      if(a.get_String_Value() > c.value)
+        return true;
+      else
+        return false;
+    }
+  }
+
+  return true;
+}
+
+void DB_Engine::make_Assignments(Tuple t, vector<pair<string,string>> assignments)
+{
+  for(pair<string,string> assign : assignments)
+  {
+    Attribute* attribute = t.get_Attribute(assign.first);
+
+    if(attribute->is_Int())
+      attribute->set_Int_Value( atoi(assign.second.c_str()) );
+    else
+      attribute->set_String_Value(assign.second);
+  }
 }

@@ -2,11 +2,9 @@
 
 #include <algorithm>
 
-Table::Table() : name(""), tuples() {}
+Table::Table(string n, Tuple template_t) : name(n), template_tuple(template_t), tuples() { }
 
-Table::Table(string n) : name(n), tuples() {}
-
-Table::Table(string n, vector<Tuple> t) : name(n), tuples(t) {}
+Table::Table(string n, Tuple template_t, vector<Tuple> t) : name(n), template_tuple(template_t), tuples() { }
 
 void Table::insert(Tuple new_tuple)
 {
@@ -78,7 +76,7 @@ Table Table::operator-(Table table)
 
 Table Table::operator*(Table table)
 {
-  Table new_table;
+  Table new_table("New Table", table.get_Template_Tuple());
   new_table.set_Name(this->get_Name() + "*" + table.get_Name());
 
   for(Tuple& i: this->get_Tuples()) {
@@ -103,6 +101,11 @@ void Table::set_Name(string new_name)
 vector<Tuple> Table::get_Tuples()
 {
   return this->tuples;
+}
+
+Tuple Table::get_Template_Tuple()
+{
+  return template_tuple;
 }
 
 void Table::show()

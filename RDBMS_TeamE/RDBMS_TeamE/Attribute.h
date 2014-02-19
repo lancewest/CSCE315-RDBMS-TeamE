@@ -31,6 +31,10 @@ public:
   string get_String_Value();
   int get_Int_Value();
   int get_Length();
+  void set_String_Value(string val);
+  void set_Int_Value(int val);
+  void set_Is_Primary(bool val);
+  void set_Length(int l);
 };
 
 inline ostream& operator<<(ostream& os, Attribute& a)
