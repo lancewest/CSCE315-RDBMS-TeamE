@@ -4,15 +4,15 @@
 
 Table::Table(string n, Tuple template_t) : name(n), template_tuple(template_t), tuples() { }
 
-Table::Table(string n, Tuple template_t, vector<Tuple> t) : name(n), template_tuple(template_t), tuples() { }
+Table::Table(string n, Tuple template_t, vector<Tuple> t) : name(n), template_tuple(template_t), tuples(t) { }
 
 void Table::insert(Tuple new_tuple)
 {
   for(Tuple& i: this->tuples) {
-    if(!i.is_Primarily_Equal(new_tuple)) {
-	  return;
+    if(i.is_Primarily_Equal(new_tuple)) {
+	    return;
+    }
 	}
-  }
 
   this->tuples.push_back(new_tuple);
 }
