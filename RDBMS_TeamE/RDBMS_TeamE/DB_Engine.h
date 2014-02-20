@@ -14,14 +14,14 @@ public:
   void create_Table(string name, Tuple template_tuple);
   void add_Table(Table* table);
     
-  void open(string directory); //opens and imports the SQL of all files in a directory into our object structure (Tables, Attributes, Tuples)
+  bool open(string directory); //opens and imports the SQL of all files in a directory into our object structure (Tables, Attributes, Tuples)
   void write(Table table);     //Writes a given table into SQL instruction to a file in the database
 
   void close(string relation_name); //Closes the given table
   void exit(); //Closes the current database session
 
   void show(Table table); // Shows requested table
-  void update(Table& table, vector<pair<string,string>> assignments, vector<Condition> conditions); //Updates an attribute in a given table and row.
+  void update(Table& table, vector<pair<string,string>> assignments, vector<Condition> conditions); //Updates all attributes specified by 'assignments' in all tuples that meet 'conditions'
   void insert(Table table, Tuple tuple); //Inserts a new Tuple into a Table
  
   void erase(Table table);              //Deletes an entire Table
@@ -45,6 +45,6 @@ public:
   vector<Attribute> get_Common_Attributes(Table table1, Table table2);
   Table* get_Table(string table_name);
   bool tuple_Meets_Conditions(Tuple t, vector<Condition> c); //Helper for Update and Select
-  bool attribute_Meets_Condition(Attribute a, Condition c); //Helper for Update and Select
+  bool attribute_Meets_Condition(Tuple t, Attribute a, Condition c); //Helper for Update and Select
   void make_Assignments(Tuple& t, vector<pair<string,string>> assignments); //Helper for Update
 };

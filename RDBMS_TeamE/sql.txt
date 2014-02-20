@@ -3,7 +3,6 @@
   INSERT INTO animals VALUES FROM ("Joe", "cat", 4);
   INSERT INTO animals VALUES FROM ("Spot", "dog", 10);
   INSERT INTO animals VALUES FROM ("Snoopy", "dog", 3);
-  UPDATE animals SET (years = 5, kind = "foo") WHERE (kind == "cat" || years > 8);
   INSERT INTO animals VALUES FROM ("Tweety", "bird", 1);
   INSERT INTO animals VALUES FROM ("Joe", "bird", 2);
 

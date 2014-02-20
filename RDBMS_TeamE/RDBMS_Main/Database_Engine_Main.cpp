@@ -6,6 +6,9 @@ int main()
   DB_Engine db;
   string current_line;
 
+  cout << "Enter a database command or query::\n";
+  cout << "Eg. OPEN filename\n";
+
   for(;;) {
     getline(cin, current_line);
 
@@ -19,12 +22,12 @@ int main()
 
   return 0;
 
-/*Read in from file
-  cout << "\n\n\nSQL from file test\n========================\n";
+  //Read in from file
+  /*cout << "\n\n\nSQL from file test\n========================\n";
   db.open("sql.txt");
 
   cout << "Enter any character to terminate program.\n";
   char c;
-  cin >> c;
-*/
+  cin >> c;*/
+
 }

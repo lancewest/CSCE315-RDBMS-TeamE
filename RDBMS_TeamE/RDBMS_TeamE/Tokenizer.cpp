@@ -169,3 +169,14 @@ void Tokenizer::increase_Index(int addend)
 {
   this->index += addend;
 }
+
+bool Tokenizer::is_One_Valid_Line()
+{
+  int count = 0;
+  for(Token t : tokens) {
+    if(t.get_Kind() == "command" || t.get_Kind() == "query operator")
+      count++;
+  }
+
+  return count < 2;
+}

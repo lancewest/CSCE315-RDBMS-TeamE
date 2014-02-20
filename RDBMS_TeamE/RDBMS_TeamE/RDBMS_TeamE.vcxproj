@@ -99,6 +99,13 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="sql.txt" />
+    <Text Include="sql_syntax_error_1.txt" />
+    <Text Include="sql_syntax_error_2.txt" />
+    <Text Include="sql_syntax_error_3.txt" />
+    <Text Include="sql_syntax_error_4.txt" />
+    <Text Include="sql_syntax_error_5.txt" />
+    <Text Include="sql_syntax_error_6.txt" />
+    <Text Include="sql_syntax_error_7.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,27 +12,6 @@ namespace Parser_Tests
   {
   public:
     //This test also tests queries and expression. Should this be broken downs? 
-    TEST_METHOD(test_Parse_Command)
-    {
-      vector<string> commands;
-        commands.push_back("CREATE TABLE animals (name VARCHAR(20), kind VARCHAR(8), years INTEGER) PRIMARY KEY (name, kind);");
-        commands.push_back("INSERT INTO animals VALUES FROM (\"Joe\", \"bird\", 2);");
-        commands.push_back("SHOW animals;");
-        commands.push_back("INSERT INTO species VALUES FROM RELATION project (kind) animals;");
-        commands.push_back("SHOW answer;");
-        commands.push_back("UPDATE animals SET (kind = \"lion\") WHERE name == (\"Joe\");");
-        commands.push_back("WRITE animals;");
-        commands.push_back("CLOSE animals;");
-
-      DB_Engine* db = new DB_Engine();
-
-      for(string& i: commands) {
-        Parser parser(db, i);
-
-        //I think this is how you would extract the bool from parse() when implemented
-        Assert::IsTrue(parser.parse().first);
-      }
-    }
 
     TEST_METHOD(test_Parse_Condition_List)
     {
@@ -47,7 +26,7 @@ namespace Parser_Tests
         Parser parser(db, i);
 
         //I think this is how you would extract the bool from parse() when implemented
-        Assert::IsTrue(parser.parse().first);
+        Assert::IsTrue(parser.parse_Condition_List().first);
       }
     }
 
@@ -64,7 +43,7 @@ namespace Parser_Tests
         Parser parser(db, i);
 
         //I think this is how you would extract the bool from parse() when implemented
-        Assert::IsTrue(parser.parse().first);
+        Assert::IsTrue(parser.parse_Typed_Attribute_List().first);
       }
     }
 
@@ -80,7 +59,7 @@ namespace Parser_Tests
         Parser parser(db, i);
 
         //I think this is how you would extract the bool from parse() when implemented
-        Assert::IsTrue(parser.parse().first);
+        Assert::IsTrue(parser.parse_Attribute_List().first);
       }
     }
 
@@ -97,31 +76,73 @@ namespace Parser_Tests
         Parser parser(db, i);
 
         //I think this is how you would extract the bool from parse() when implemented
-        Assert::IsTrue(parser.parse().first);
+        Assert::IsTrue(parser.parse_Literal_List().first);
       }
     }
 
-    TEST_METHOD(test_Parse_Querry)
+    TEST_METHOD(test_Parse)
     {
-      vector<string> querries;
-        querries.push_back("a <- rename (aname, akind) (project (name, kind) animals);");
-
-        //Just noticed that aparently the result of multiplying two tables has different attribute names
-        //for commond attributes. It seems that the attributes from relation "a" are called a[INSERT NAME OF ATTRIBUTE]
-        //as in aname instead of name, or akind instead of kind. I don't think we've done this.
-        querries.push_back("common_names <- project (name) (select (aname == name && akind != kind) (a * animals));");
-        querries.push_back("answer <- common_names;");
-
       DB_Engine* db = new DB_Engine();
 
-      for(string& i: querries) {
-        Parser parser(db, i);
-
-        //I think this is how you would extract the bool from parse() when implemented
-        Assert::IsTrue(parser.parse().first);
-      }
+      //Read in from file to test all commands and queries
+      Assert::IsTrue( db->open("sql.txt") );
     }
 
+    TEST_METHOD(test_Parse_Bad_Syntaxe_1)
+    {
+      DB_Engine* db = new DB_Engine();
+
+      //Read in from file to test all commands and queries
+      Assert::IsFalse( db->open("sql_syntax_error_1.txt") );
+    }
+
+    TEST_METHOD(test_Parse_Bad_Syntaxes_2)
+    {
+      DB_Engine* db = new DB_Engine();
+
+      //Read in from file to test all commands and queries
+      Assert::IsFalse( db->open("sql_syntax_error_2.txt") );
+    }
+
+    TEST_METHOD(test_Parse_Bad_Syntaxes_3)
+    {
+      DB_Engine* db = new DB_Engine();
+
+      //Read in from file to test all commands and queries
+      Assert::IsFalse( db->open("sql_syntax_error_3.txt") );
+    }
+
+    TEST_METHOD(test_Parse_Bad_Syntaxes_4)
+    {
+      DB_Engine* db = new DB_Engine();
+
+      //Read in from file to test all commands and queries
+      Assert::IsFalse( db->open("sql_syntax_error_4.txt") );
+    }
+
+    TEST_METHOD(test_Parse_Bad_Syntaxes_5)
+    {
+      DB_Engine* db = new DB_Engine();
+
+      //Read in from file to test all commands and queries
+      Assert::IsFalse( db->open("sql_syntax_error_5.txt") );
+    }
+
+    TEST_METHOD(test_Parse_Bad_Syntaxes_6)
+    {
+      DB_Engine* db = new DB_Engine();
+
+      //Read in from file to test all commands and queries
+      Assert::IsFalse( db->open("sql_syntax_error_6.txt") );
+    }
+
+    TEST_METHOD(test_Parse_Bad_Syntaxes_7)
+    {
+      DB_Engine* db = new DB_Engine();
+
+      //Read in from file to test all commands and queries
+      Assert::IsFalse( db->open("sql_syntax_error_7.txt") );
+    }
   };
 }
 

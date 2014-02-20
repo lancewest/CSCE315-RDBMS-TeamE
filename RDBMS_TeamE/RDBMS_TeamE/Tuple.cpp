@@ -60,7 +60,7 @@ bool Tuple::is_Primarily_Equal(Tuple t)
 
   for(unsigned int i = 0; i < this->get_Size(); ++i) {
     if( this->get_Attributes()[i].is_Primary() &&
-	   this->get_Attributes()[i] != t.get_Attributes()[i] ) {
+      !(this->get_Attributes()[i].is_Compatible(t.get_Attributes()[i])) ) {
          return false;
     }
   }

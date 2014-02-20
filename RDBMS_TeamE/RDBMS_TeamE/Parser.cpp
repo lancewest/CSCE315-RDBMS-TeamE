@@ -9,6 +9,9 @@ Parser::Parser(DB_Engine* db_ptr, string c) : db(db_ptr), command(c), tokenizer(
 //Tries to parse a command first and if not in command format then parses query
 bool Parser::parse()
 {
+  if(!this->tokenizer.is_One_Valid_Line())
+    return false;
+
   if(this->tokenizer.get_Token().get_Kind() == "command") {
     return parse_Command();
   }
@@ -23,8 +26,11 @@ bool Parser::parse()
       pair<bool, Table> result = parse_Query();
       result.second.set_Name(operand_relation_name.get_Value());
       db->add_Table(&(result.second));
+
       return result.first;
     }
+    else
+      return false;
   }
 
   else if(this->tokenizer.consume_Token(";")) {
@@ -130,15 +136,29 @@ bool Parser::parse_Command()
                 
             pair<bool,vector<string>> primes = this->parse_Attribute_List();
 
+            vector<Attribute> attributes_prime_fixed = vector<Attribute>();
             for(Attribute& a : attributes.second.get_Attributes()) {
+
+              bool fixed = false;
               for(string prime : primes.second) {
-                if(a.get_Name() == prime)
-                  a.set_Is_Primary(true);
+
+                
+                if(a.get_Name() == prime) {
+                  Attribute fixed_attribute = a;
+                  fixed_attribute.set_Is_Primary(true);
+                  attributes_prime_fixed.push_back(fixed_attribute);
+                  fixed = true;
+                  break;
+                }
+                  
               }
+              if(!fixed)
+                attributes_prime_fixed.push_back(a);
+              fixed = false;
             }
 
             if(primes.first) {
-              db->create_Table(name.get_Value(), attributes.second);
+              db->create_Table(name.get_Value(), attributes_prime_fixed);
               return true;
              }
            }
@@ -207,6 +227,9 @@ bool Parser::parse_Command()
     }
   }
 
+  if(this->tokenizer.consume_Token("EXIT") && this->tokenizer.consume_Token(";"))
+    return true;
+
   return false;
 }
 
@@ -263,6 +286,7 @@ pair<bool, Table> Parser::parse_Query()
 
     pair<bool, Table> op1 = this->parse_Expression();
     if(op1.first) {
+      tokenizer.increase_Index();
 
     //JOIN
     if(this->tokenizer.consume_Token("JOIN")) {
@@ -284,6 +308,9 @@ pair<bool, Table> Parser::parse_Query()
       pair<bool, Table> op2 = this->parse_Expression();
       return pair<bool, Table>(true, db->difference_Tables( op1.second, op2.second) );
     }
+    else {
+      return pair<bool,Table>(true, op1.second);
+    }
   }
 
   return this->parse_Expression();
@@ -293,6 +320,7 @@ pair<bool, Table> Parser::parse_Query()
 pair<bool, vector<Condition>> Parser::parse_Condition_List()
 {
   //While loop that reads in an attribute, operator, value, and possibly a conjunction all at the same time to make list of conditions
+  bool is_literal = false;
 
   this->tokenizer.consume_Token("(");
   vector<Condition> conditions = vector<Condition>();
@@ -300,7 +328,8 @@ pair<bool, vector<Condition>> Parser::parse_Condition_List()
   tokenizer.increase_Index();
   Token compare_operator = this->tokenizer.get_Token();
   tokenizer.increase_Index();
-  tokenizer.consume_Token("\"");
+  if(tokenizer.consume_Token("\"") || tokenizer.get_Token().get_Kind() == "digit")
+    is_literal = true;
   Token value = this->tokenizer.get_Token();
   tokenizer.increase_Index();
   tokenizer.consume_Token("\"");
@@ -316,13 +345,15 @@ pair<bool, vector<Condition>> Parser::parse_Condition_List()
       return pair<bool, vector<Condition>>(false,vector<Condition>());
     }
 
-    conditions.push_back( Condition(conditional_attribute.get_Value(), compare_operator.get_Value(), value.get_Value(), conjunction.get_Value()) );
+    conditions.push_back( Condition(conditional_attribute.get_Value(), compare_operator.get_Value(), value.get_Value(), conjunction.get_Value(), is_literal) );
+    is_literal = false;
 
     conditional_attribute = this->tokenizer.get_Token();
     tokenizer.increase_Index();
     compare_operator = this->tokenizer.get_Token();
     tokenizer.increase_Index();
-    tokenizer.consume_Token("\"");
+    if(tokenizer.consume_Token("\"") || tokenizer.get_Token().get_Kind() == "digit")
+      is_literal = true;
     value = this->tokenizer.get_Token();
     tokenizer.increase_Index();
     tokenizer.consume_Token("\"");
@@ -330,18 +361,22 @@ pair<bool, vector<Condition>> Parser::parse_Condition_List()
     tokenizer.increase_Index();
   }
 
-  conditions.push_back( Condition(conditional_attribute.get_Value(), compare_operator.get_Value(), value.get_Value(), conjunction.get_Value()) );
+  conditions.push_back( Condition(conditional_attribute.get_Value(), compare_operator.get_Value(), value.get_Value(), conjunction.get_Value(), is_literal) );
+  is_literal = false;
 
   return pair<bool, vector<Condition>>(true, conditions);
 }
 
 pair<bool, Table> Parser::parse_Expression()
 {
-  this->tokenizer.consume_Token("(");
-  this->tokenizer.consume_Token(")");
+  if(this->tokenizer.consume_Token("("))
+    return parse_Query();
+  
+  //this->tokenizer.consume_Token(")");
 
-  if(this->tokenizer.get_Token().get_Kind() == "relation name" )
+  if(this->tokenizer.get_Token().get_Kind() == "relation name" ) {
     return pair<bool, Table>(true, *(db->get_Table(this->tokenizer.get_Token().get_Value())));
+  }
 
   if(this->tokenizer.get_Token().get_Kind() == "semicolon") {
     this->tokenizer.increase_Index();
@@ -444,6 +479,7 @@ pair<bool,Tuple> Parser::parse_Typed_Attribute_List()
   return pair<bool,Tuple>( false, Tuple() );
 }
 
+//Used by parse_Sttribute_List n times per list of attributes n long
 pair<bool,string> Parser::parse_Attribute()
 {
   Token name = this->tokenizer.get_Token();
@@ -454,14 +490,15 @@ pair<bool,string> Parser::parse_Attribute()
   return pair<bool,string>();
 }
 
+//Attributes parseing function used to insert, rename, and update
 pair<bool, vector<string>> Parser::parse_Attribute_List()
 {
   if(this->tokenizer.consume_Token("(")) {
     vector<string> attributes = vector<string>();
     pair<bool,string> attribute = this->parse_Attribute();
     while(attribute.first) {
+      attributes.push_back(attribute.second);
       if(this->tokenizer.consume_Token(",")) {
-        attributes.push_back(attribute.second);
         attribute = this->parse_Attribute();
         continue;
       }

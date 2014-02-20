@@ -70,5 +70,26 @@
     <Text Include="sql.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="sql_syntax_error_1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sql_syntax_error_2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sql_syntax_error_3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sql_syntax_error_4.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sql_syntax_error_5.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sql_syntax_error_6.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sql_syntax_error_7.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -4,14 +4,14 @@
 
 Table::Table(string n, Tuple template_t) : name(n), template_tuple(template_t), tuples() { }
 
-Table::Table(string n, Tuple template_t, vector<Tuple> t) : name(n), template_tuple(template_t), tuples() { }
+Table::Table(string n, Tuple template_t, vector<Tuple> t) : name(n), template_tuple(template_t), tuples(t) { }
 
 void Table::insert(Tuple new_tuple)
 {
   for(Tuple& i: this->tuples) {
     if(!i.is_Primarily_Equal(new_tuple)) {
 	  return;
-	}
+	  }
   }
 
   this->tuples.push_back(new_tuple);
@@ -19,6 +19,9 @@ void Table::insert(Tuple new_tuple)
 
 bool Table::is_Union_Compatible(Table table)
 {
+  if(this->get_Tuples().size() == 0 || table.get_Tuples().size() == 0)
+    return true;
+
   Tuple lhs = this->get_Tuples().front();
   Tuple rhs = table.get_Tuples().front();
 
@@ -76,16 +79,15 @@ Table Table::operator-(Table table)
 
 Table Table::operator*(Table table)
 {
-  Table new_table("New Table", table.get_Template_Tuple());
-  new_table.set_Name(this->get_Name() + "*" + table.get_Name());
+  vector<Tuple> new_tuples = vector<Tuple>();
 
   for(Tuple& i: this->get_Tuples()) {
     for(Tuple &j: table.get_Tuples()) {
-		  new_table.insert(i+j);
+      new_tuples.push_back(i+j);
 	  }
   }
 
-  return new_table;
+  return Table( this->get_Name() + "*" + table.get_Name(), new_tuples[0], new_tuples);
 }
 
 string Table::get_Name()
@@ -112,7 +114,7 @@ void Table::show()
 {
   cout << "Table: " << name << "\n";
   for(unsigned int i = 0; i < this->tuples.size(); ++i) {
-    cout << i << "Contents: ";
+    cout << i << " Contents: ";
     tuples[i].show();
     cout << "\n";
   }

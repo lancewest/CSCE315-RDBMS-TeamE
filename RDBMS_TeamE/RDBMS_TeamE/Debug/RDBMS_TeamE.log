@@ -1,29 +1,9 @@
-﻿Build started 2/18/2014 11:57:39 PM.
-     1>Project "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\RDBMS_TeamE\RDBMS_TeamE.vcxproj" on node 2 (Build target(s)).
-     1>InitializeBuildStatus:
-         Creating "Debug\RDBMS_TeamE.unsuccessfulbuild" because "AlwaysCreate" was specified.
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt DB_Engine.cpp Parser.cpp
-         Parser.cpp
-     1>\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\desktop\csce315-rdbms-teame.git\rdbms_teame\rdbms_teame\parser.cpp(165): warning C4018: '<' : signed/unsigned mismatch
-         Generating Code...
-         Skipping... (no relevant changes detected)
-         DB_Engine.cpp
-       Lib:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:"\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\Debug\RDBMS_TeamE.lib" /NOLOGO Debug\Attribute.obj
-         Debug\Condition.obj
-         Debug\DB_Engine.obj
-         Debug\Parser.obj
-         Debug\Table.obj
-         Debug\Token.obj
-         Debug\Tokenizer.obj
-         Debug\Tuple.obj
-         RDBMS_TeamE.vcxproj -> \\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\Debug\RDBMS_TeamE.lib
-       FinalizeBuildStatus:
-         Deleting file "Debug\RDBMS_TeamE.unsuccessfulbuild".
-         Touching "Debug\RDBMS_TeamE.lastbuildstate".
-     1>Done Building Project "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\RDBMS_TeamE\RDBMS_TeamE.vcxproj" (Build target(s)).
+﻿Build started 2/20/2014 5:01:33 AM.
+     1>Project "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\RDBMS_TeamE\RDBMS_TeamE.vcxproj" on node 2 (Clean target(s)).
+     1>_PrepareForClean:
+         Deleting file "Debug\RDBMS_TeamE.lastbuildstate".
+     1>Done Building Project "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\RDBMS_TeamE\RDBMS_TeamE.vcxproj" (Clean target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.48
+Time Elapsed 00:00:01.18

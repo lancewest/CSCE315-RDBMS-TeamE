@@ -138,6 +138,7 @@ namespace RDBMS_Tests
       Table joined = engine->natural_Join( clients,  accounts);
 
       Assert::IsTrue(joined.get_Tuples().size() == 2);
+      Assert::IsTrue(joined.get_Tuples()[0].get_Attributes().size() == 3);
     }
 
     void fill_Engine(DB_Engine *engine)

@@ -29,4 +29,5 @@ public:
   void checkpoint();             //set a chekpoint to back up to 
   void back_Up();
   void increase_Index(int addend = 1);
+  bool is_One_Valid_Line();
 };
