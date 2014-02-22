@@ -43,9 +43,11 @@ namespace RDBMS_Tests
       table->insert(*tuple1);
       table->insert(*tuple2);
 
-      Assert::AreEqual<int>(table->get_Tuples().size(), 2);
-      Assert::IsTrue(table->get_Tuples()[0] == *tuple1);
-      Assert::IsTrue(table->get_Tuples()[1] == *tuple2);
+      vector<Tuple> tuples = table->get_Tuples();
+
+      Assert::AreEqual<int>(tuples.size(), 2);
+      Assert::IsTrue(table->tuples[0] == *tuple1);
+      Assert::IsTrue(table->tuples[1] == *tuple2);
     }
 
     TEST_METHOD(test_Table_Insert_Show)
