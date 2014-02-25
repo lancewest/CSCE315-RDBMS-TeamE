@@ -1,9 +1,22 @@
-﻿Build started 2/20/2014 5:01:30 AM.
-     1>Project "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\RDBMS_Main\RDBMS_Main.vcxproj" on node 2 (Clean target(s)).
-     1>_PrepareForClean:
-         Deleting file "Debug\RDBMS_Main.lastbuildstate".
-     1>Done Building Project "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\RDBMS_Main\RDBMS_Main.vcxproj" (Clean target(s)).
+﻿Build started 2/24/2014 6:43:40 PM.
+     1>Project "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\RDBMS_Main\RDBMS_Main.vcxproj" on node 3 (Build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\RDBMS_Main.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\RDBMS_TeamE /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Bank_Application.cpp Database_Engine_Main.cpp
+         Database_Engine_Main.cpp
+         Bank_Application.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\Debug\RDBMS_Main.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\Debug\RDBMS_Main.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\Debug\RDBMS_Main.lib" /MACHINE:X86 Debug\Bank_Application.obj
+         Debug\Database_Engine_Main.obj
+         "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\Debug\RDBMS_TeamE.lib"
+         RDBMS_Main.vcxproj -> \\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\Debug\RDBMS_Main.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\RDBMS_Main.unsuccessfulbuild".
+         Touching "Debug\RDBMS_Main.lastbuildstate".
+     1>Done Building Project "\\filer.cs.tamu.edu\lwest\ms_windows\cpsc_redirected\Desktop\CSCE315-RDBMS-TeamE.git\RDBMS_TeamE\RDBMS_Main\RDBMS_Main.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.38
+Time Elapsed 00:00:07.22

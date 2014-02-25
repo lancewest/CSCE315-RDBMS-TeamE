@@ -85,12 +85,12 @@ bool Parser::parse_Command()
   if(this->tokenizer.get_Token().get_Value() == "SHOW") {
 
     if(this->tokenizer.consume_Token("SHOW") ) {
-       Token relation_name = this->tokenizer.get_Token();
-       if(relation_name.get_Kind() == "relation name")
+      pair<bool, Table> to_show = this->parse_Expression();
+      if(to_show.first) {
 
-         this->tokenizer.increase_Index();
-       db->show( *(db->get_Table(relation_name.get_Value())) );
-         return true;
+        db->show( to_show.second );
+        return true;
+      }
     }
   }
 

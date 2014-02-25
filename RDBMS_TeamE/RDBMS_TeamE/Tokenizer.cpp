@@ -174,7 +174,7 @@ bool Tokenizer::is_One_Valid_Line()
 {
   int count = 0;
   for(Token t : tokens) {
-    if(t.get_Kind() == "command" || t.get_Kind() == "query operator")
+    if( (t.get_Kind() == "command" || t.get_Kind() == "query operator"))
       count++;
   }
 

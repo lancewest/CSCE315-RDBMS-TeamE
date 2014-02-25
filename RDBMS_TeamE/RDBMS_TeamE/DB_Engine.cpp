@@ -8,6 +8,12 @@
 
 DB_Engine::DB_Engine() : tables() { }
 
+void DB_Engine::parse(string s)
+{
+  Parser parser(this, s);
+  parser.parse();
+}
+
 void DB_Engine::create_Table(string name, Tuple template_tuple)
 {
   Table new_table = Table(name, template_tuple);
@@ -167,7 +173,7 @@ void DB_Engine::erase(Table& table, vector<Condition> conditions)
   }
 }
 
-// selects all tuples whose attributes pass the testing function f
+// selects all tuples whose attributes pass the testing function f, older implementation kept for possible future use
 Table DB_Engine::select(Table table, string attr_name, bool (*f) (Attribute))
 {
   vector<Tuple> tuples = vector<Tuple>();
@@ -186,6 +192,7 @@ Table DB_Engine::select(Table table, string attr_name, bool (*f) (Attribute))
   return Table( "New Table", tuples[0], tuples);
 }
 
+// selects all tuples from table that meet conditions
 Table DB_Engine::select(Table table, vector<Condition> conditions)
 {
   vector<Tuple> selected = vector<Tuple>();

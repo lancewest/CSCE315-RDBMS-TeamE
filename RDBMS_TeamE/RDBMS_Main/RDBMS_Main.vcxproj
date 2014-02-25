@@ -79,6 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bank_Application.cpp" />
     <ClCompile Include="Database_Engine_Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +95,9 @@
     <Text Include="sql_syntax_error_5.txt" />
     <Text Include="sql_syntax_error_6.txt" />
     <Text Include="sql_syntax_error_7.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bank_Application.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

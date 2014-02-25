@@ -11,6 +11,8 @@ private:
 public:
   DB_Engine();
 
+  void parse(string s);
+
   void create_Table(string name, Tuple template_tuple);
   void add_Table(Table* table);
     
